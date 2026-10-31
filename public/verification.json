@@ -34,5 +34,5 @@
   ],
   "passed": true,
   "recordedAt": "2026-10-31T11:34:26.1758066Z",
-  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed in the final local session. Healthy Redis cache is not verified. Hosted CI is configured; its first run is pending. Recorded evidence, not continuous monitoring."
+  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed locally. The first hosted GitHub Actions run also passed: https://github.com/Ricoo05/finos-core/actions/runs/41197540154 . Healthy Redis cache is not verified. Recorded evidence, not continuous monitoring."
 }

@@ -82,7 +82,7 @@ Ports: frontend 5173, API 8080, PostgreSQL 55432, Kafka 19092/controller 19093. 
 
 `src/` contains the desk; `backend/src/` contains the services, migrations and integration tests; `tests/browser/` contains browser workflows; `scripts/` contains runtime helpers and the HTTP smoke test. [DEMO.md](DEMO.md) is a short interview walkthrough.
 
-The GitHub Actions workflow in `.github/workflows/verify.yml` provisions isolated PostgreSQL and Kafka services, runs all backend tests, builds the app, and checks it in Chromium. It intentionally disables external FX retrieval so core CI does not depend on a third-party API. **Hosted CI has not run yet:** the project has not been pushed to a remote repository. Local checks are the current evidence.
+The GitHub Actions workflow in `.github/workflows/verify.yml` provisions isolated PostgreSQL and Kafka services, runs all backend tests, builds the app, and checks it in Chromium. It intentionally disables external FX retrieval so core CI does not depend on a third-party API. The [first GitHub Actions run](https://github.com/Ricoo05/finos-core/actions/runs/41197540154) passed on 31 October 2026, including the backend integration tests, frontend build, HTTP smoke check and Chromium browser tests. Local live-FX checks also passed.
 
 For Linux/macOS, use Java 21, Maven, Node 24, PostgreSQL 16, and Kafka with the environment/database setup shown in that workflow. The portable PowerShell bootstrap is Windows x64 only.
 
