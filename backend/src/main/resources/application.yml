@@ -1,0 +1,57 @@
+server:
+  address: ${BIND_ADDRESS:127.0.0.1}
+  port: ${PORT:8080}
+  error:
+    include-message: never
+spring:
+  application:
+    name: finos-core-ledger
+  threads:
+    virtual:
+      enabled: true
+  flyway:
+    user: ${MIGRATION_USER:finos_owner}
+    password: ${MIGRATION_PASSWORD}
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:55432/finos}
+    username: ${DB_USER:finos_app}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 16
+      connection-timeout: 3000
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      connect-timeout: 200ms
+      timeout: 200ms
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 10000
+        request.timeout.ms: 5000
+        max.block.ms: 3000
+    consumer:
+      group-id: finos-risk-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  health:
+    redis:
+      enabled: ${REDIS_ENABLED:false}
+finos:
+  redis-enabled: ${REDIS_ENABLED:false}
+  event-mode: ${EVENT_MODE:postgres}

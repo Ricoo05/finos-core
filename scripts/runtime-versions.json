@@ -1,0 +1,7 @@
+{
+  "java": {"url":"https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.13_9.zip","archive":"jdk.zip","folder":"java","binary":"jdk-21.0.13+9/bin/java.exe","sha256":"a4dbaa05fca4bd89d84584e58c459bd732efebb1722af80ab13c6516832004f9"},
+  "maven": {"url":"https://archive.apache.org/dist/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.zip","archive":"maven.zip","folder":"maven","binary":"apache-maven-3.10.0/bin/mvn.cmd","sha256":"1f6d9909266510f039f59aa0e13dcd2c66da85f043e56276e41f2918f8bddaff"},
+  "pgBin": {"url":"https://get.enterprisedb.com/postgresql/postgresql-16.15-1-windows-x64-binaries.zip","archive":"postgres.zip","folder":"postgres","binary":"pgsql/bin/pg_ctl.exe","sha256":"43bb45f173a6f08cf1d29a97a6d8deb119e8e8093a24c00d2d1001a0ccaa8281"},
+  "kafka": {"url":"https://archive.apache.org/dist/kafka/4.4.0/kafka_2.13-4.4.0.tgz","archive":"kafka.tgz","folder":"kafka","binary":"kafka_2.13-4.4.0/config/server.properties","sha256":"5d46df16e8dbd228fed83c3e6fc4306916cf3d9156184a7fc2462e9ad9711a7d"},
+  "node": {"url":"https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip","archive":"node.zip","folder":"node","binary":"node-v24.22.1-win-x64/node.exe","sha256":"d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5"}
+}

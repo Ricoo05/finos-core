@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env*
+*.log
+.local/
+backend/target/
+playwright-report/
+test-results/
+node_modules.pnpm-backup/
+node_modules.incomplete/
+reference/

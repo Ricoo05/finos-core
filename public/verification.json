@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "12 backend integration tests passed, including real Kafka and Redis outage fallback.",
+    "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
+    "Live FX check: provider available, timestamp fresh, server quote returned.",
+    "Frontend production build passed.",
+    "5 browser tests passed: all six views at 320, 390, 768 and 1440px; settlement/replay after reload, validation, freezing, backlog recovery, and reconnect."
+  ],
+  "suites": [
+    {
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 20.474,
+      "tests": 1,
+      "name": "dev.finoscore.KafkaIntegrationTest",
+      "errors": 0
+    },
+    {
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 3.326,
+      "tests": 10,
+      "name": "dev.finoscore.LedgerIntegrationTest",
+      "errors": 0
+    },
+    {
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 1.813,
+      "tests": 1,
+      "name": "dev.finoscore.RedisFallbackTest",
+      "errors": 0
+    }
+  ],
+  "passed": true,
+  "recordedAt": "2026-10-31T11:34:26.1758066Z",
+  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed in the final local session. Healthy Redis cache is not verified. Hosted CI is configured; its first run is pending. Recorded evidence, not continuous monitoring."
+}
