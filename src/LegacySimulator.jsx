@@ -52,6 +52,10 @@ function secureRandomInt(limit) {
   return value[0] % limit;
 }
 
+function secureRandomUnit() {
+  return crypto.getRandomValues(new Uint32Array(1))[0] / 0x100000000;
+}
+
 // Generates a compliant W3C Trace Context traceparent header: 00-<32hexTraceId>-<16hexSpanId>-01
 function generateW3CTraceContext() {
   const traceId = generateHexId(32);
@@ -1455,14 +1459,14 @@ export default function App() {
     const pipTimer = setInterval(() => {
       if (!isMounted) return;
       setLiveMarketFeed((prev) => {
-        const delta = (Math.random() - 0.495) * 0.012;
+        const delta = (secureRandomUnit() - 0.495) * 0.012;
         const nextUsdInr = Number(Math.max(83.1, prev.USD_INR + delta).toFixed(4));
-        const btcDelta = (Math.random() - 0.49) * 18.5;
+        const btcDelta = (secureRandomUnit() - 0.49) * 18.5;
         return {
           ...prev,
           USD_INR: nextUsdInr,
-          EUR_INR: Number((nextUsdInr * 1.0812 + (Math.random() - 0.5) * 0.01).toFixed(4)),
-          GBP_INR: Number((nextUsdInr * 1.2872 + (Math.random() - 0.5) * 0.01).toFixed(4)),
+          EUR_INR: Number((nextUsdInr * 1.0812 + (secureRandomUnit() - 0.5) * 0.01).toFixed(4)),
+          GBP_INR: Number((nextUsdInr * 1.2872 + (secureRandomUnit() - 0.5) * 0.01).toFixed(4)),
           BTC_USD: prev.wsConnected ? prev.BTC_USD : Number((prev.BTC_USD + btcDelta).toFixed(2)),
           tickDirection: delta >= 0 ? 'UP' : 'DOWN',
           tickCount: prev.tickCount + 1,
@@ -2608,7 +2612,7 @@ export default function App() {
     ];
 
     const timer = setInterval(() => {
-      const pick = rails[Math.floor(Math.random() * rails.length)];
+      const pick = rails[Math.floor(secureRandomUnit() * rails.length)];
       const src = INITIAL_ACCOUNTS[pick.srcIdx];
       const dst = INITIAL_ACCOUNTS[pick.dstIdx];
       let spot = 1.0;
