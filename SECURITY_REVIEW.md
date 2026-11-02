@@ -21,7 +21,7 @@ No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration tes
 
 ## Hosted source analysis and launcher review
 
-CodeQL completed Java and JavaScript analysis on commit 883d02a. It reported two insecure-randomness findings in the archived simulator; these are being corrected with Web Crypto for UUIDs, trace IDs and request identifiers. The identifier-only correction left two findings because simulated amounts also flow into request hashing; all remaining simulation randomness now uses Web Crypto in 7a3c7c2. A new CodeQL run must establish resolution; do not describe the earlier scan as zero-alert.
+Earlier CodeQL reviews found randomness issues in the archived browser simulator. Web Crypto and rejection sampling corrected those findings; the final observed results are recorded below.
 
 The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. The repeated independent setup/test passed: 13 Java, eight browser and two HTTP/live-FX checks plus build; see CLEAN_CLONE_VERIFICATION.md.
 
@@ -30,3 +30,5 @@ The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-hand
 Implementation b8cb94b passed CodeQL run 41432950343: zero Java results, zero JavaScript results, zero open main-branch alerts verified through the repository API. All archived randomness uses Web Crypto; rail selection and simulated pricing use rejection-sampled integers rather than rounded random fractions. Earlier findings were corrected without dismissals. Full verification run 41432950217 passed. Independent setup/test passed after the Windows launcher correction. Earlier in-progress statements above are historical and superseded by these results.
 
 The two documented Spring applicability exceptions remain, with expiry and source references. CodeQL success is not a claim of production security or zero dependency advisories.
+
+Recheck access limit: the GitHub Dependabot alerts API returned HTTP 403 for this session. Its alert count was not verified. npm audit and the resolved Maven OSV scan provide the executed dependency checks; CodeQL alert access succeeded.

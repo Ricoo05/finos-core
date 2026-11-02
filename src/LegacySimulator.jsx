@@ -1337,7 +1337,7 @@ export default function App() {
   const [backendSelfTestResults, setBackendSelfTestResults] = useState([]);
 
   // --------------------------------------------------------------------------
-  // 2B. REAL-TIME TIER-1 INTERBANK FX FEED, WEBSOCKET TICKER & SEARCH-GROUNDED AI
+  // 2B. REAL-TIME TIER-1 INTERBANK FX FEED, WEBSOCKET TICKER & PRESET INSTITUTIONAL SCENARIOS
   // --------------------------------------------------------------------------
   const [liveMarketFeed, setLiveMarketFeed] = useState({
     USD_INR: 84.385,
@@ -1357,7 +1357,7 @@ export default function App() {
   const [liveInterbankTapeActive, setLiveInterbankTapeActive] = useState(false);
   const [interbankTapeLogs, setInterbankTapeLogs] = useState([]);
 
-  // Live Google-Search Grounded Tier-1 Banking Intelligence State (Gemini 3 Flash + google_search)
+  // Preset institutional scenario state (local educational examples)
   const [selectedBankIntelTarget, setSelectedBankIntelTarget] = useState('JPM_KINEXYS');
   const [isFetchingLiveIntel, setIsFetchingLiveIntel] = useState(false);
   const [liveBankIntel, setLiveBankIntel] = useState({
@@ -3972,7 +3972,7 @@ export default function App() {
         )}
 
         {/* ====================================================================
-            TAB 2: REAL-TIME TIER-1 IB FX DESK, AUTOPILOT TAPE & GEMINI SEARCH INTEL
+            TAB 2: REAL-TIME TIER-1 IB FX DESK, AUTOPILOT TAPE & PRESET SCENARIOS
            ==================================================================== */}
         {activeTab === 'live-ib-desk' && (
           <section className="bg-slate-900/95 border border-sky-500/30 rounded-xl p-5 space-y-5 shadow-xl shadow-sky-950/15">
@@ -4083,7 +4083,7 @@ export default function App() {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono font-bold">
-                      GEMINI SEARCH-GROUNDED TIER-1 IB INTEL
+                      PRESET INSTITUTIONAL SCENARIOS
                     </span>
                     <span className="text-xs font-mono font-bold text-white">{liveBankIntel.bankName}</span>
                   </div>
@@ -4127,7 +4127,7 @@ export default function App() {
 
                 <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
                   {isFetchingLiveIntel
-                    ? 'Querying Google Search via gemini-3-flash-preview for live institutional settlement & architecture intelligence...'
+                    ? 'Loading the selected preset institutional settlement scenario...'
                     : liveBankIntel.headline}
                 </p>
 
