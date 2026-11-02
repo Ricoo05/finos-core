@@ -1,0 +1,44 @@
+{
+  "sourceCommit": "d45cc1853d31633a5c070add509f4c861e1db7a3",
+  "verification": {
+    "recordedAt": "2026-11-02T10:46:38.6567829Z",
+    "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring.",
+    "checks": [
+      "13 backend integration tests passed, including real Kafka and Redis outage fallback.",
+      "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
+      "Live FX check: provider available, timestamp fresh, server quote returned.",
+      "8 browser tests passed: six views, 320–1440px widths, retry after reload, freeze, backlog recovery, reconnect, FX form, scenario and archived simulator.",
+      "Frontend production build passed."
+    ],
+    "suites": [
+      {
+        "failures": 0,
+        "errors": 0,
+        "tests": 1,
+        "seconds": 19.018,
+        "skipped": 0,
+        "name": "dev.finoscore.KafkaIntegrationTest"
+      },
+      {
+        "failures": 0,
+        "errors": 0,
+        "tests": 11,
+        "seconds": 3.968,
+        "skipped": 0,
+        "name": "dev.finoscore.LedgerIntegrationTest"
+      },
+      {
+        "failures": 0,
+        "errors": 0,
+        "tests": 1,
+        "seconds": 2.345,
+        "skipped": 0,
+        "name": "dev.finoscore.RedisFallbackTest"
+      }
+    ],
+    "passed": true
+  },
+  "recordedAt": "2026-11-02T10:47:12.4668877Z",
+  "passed": true,
+  "isolation": "Anonymous clone; fresh independent runtimes/credentials/data initialized on first attempt. Repeated after first-start launcher fix. No original settings/data reused. Same Windows machine, Maven/npm caches and installed Edge."
+}

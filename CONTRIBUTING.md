@@ -6,4 +6,4 @@ Preserve these invariants: paired zero-sum journal entries; balance-to-journal r
 
 Run `npm run format:check`, `npm audit --audit-level=moderate` and `./Test-FINOS.ps1 -BrowserChannel msedge` before proposing a change. Use `-LiveFx` for provider-dependent checks; core CI deliberately runs without an external provider. Document an unexecuted check explicitly.
 
-Describe the behavioral change, relevant test result and tradeoff in a pull request. Avoid unrelated UI changes, fabricated performance claims or claims of bank/FINOS affiliation. Contributions cannot imply a license grant until the owner selects a project license.
+Describe the behavioral change, relevant test result and tradeoff in a pull request. Avoid unrelated UI changes, fabricated performance claims or claims of bank/FINOS affiliation. Project contributions follow the MIT license; dependencies retain their own license terms.

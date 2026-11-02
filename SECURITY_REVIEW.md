@@ -21,6 +21,6 @@ No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration tes
 
 ## Hosted source analysis and launcher review
 
-CodeQL completed Java and JavaScript analysis on commit 883d02a. It reported two insecure-randomness findings in the archived simulator; these are being corrected with Web Crypto for UUIDs, trace IDs and request identifiers. Simulation price changes still use ordinary randomness intentionally. A new CodeQL run must establish resolution; do not describe the earlier scan as zero-alert.
+CodeQL completed Java and JavaScript analysis on commit 883d02a. It reported two insecure-randomness findings in the archived simulator; these are being corrected with Web Crypto for UUIDs, trace IDs and request identifiers. The identifier-only correction left two findings because simulated amounts also flow into request hashing; all remaining simulation randomness now uses Web Crypto in 7a3c7c2. A new CodeQL run must establish resolution; do not describe the earlier scan as zero-alert.
 
-The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. Fresh independent setup is being repeated and its outcome belongs in CLEAN_CLONE_VERIFICATION.md.
+The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. The repeated independent setup/test passed: 13 Java, eight browser and two HTTP/live-FX checks plus build; see CLEAN_CLONE_VERIFICATION.md.

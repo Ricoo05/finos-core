@@ -13,3 +13,7 @@
 - NOT TESTED: Docker, healthy Redis path, public interactive hosting and comprehensive runtime vulnerability assessment. These are not advertised as working.
 
 No ForgeX/RUTHLESS/resume/profile settings are part of this publication. No history rewriting, duplicate repositories or paid resources are required.
+
+## Completed publication follow-up
+
+Public source, license and demo access verified anonymously. Independent clone setup/test passed after the first-start launcher fix (13 Java, eight browser, two HTTP/live-FX checks and build). Owner-only write access, no invitations, protected main and disabled auto-merge verified. See FINAL_GITHUB_STATUS.md for exact CI links and remaining scan status. No Docker or public-service deployment claim is made.

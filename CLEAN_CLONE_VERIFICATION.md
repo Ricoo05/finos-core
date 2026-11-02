@@ -1,7 +1,9 @@
-# Clean-clone verification
+# Clean-clone verification — PASS
 
-Status: **NOT YET EXECUTED for the publication candidate**. Existing-directory tests passed, but they do not establish fresh setup.
+On 2 November 2026 an anonymous HTTPS clone was made into a new directory with no `.local` configuration. SHA-256-verified distribution archives were reused as a download cache; Java/Maven/PostgreSQL/Kafka/Node were extracted independently. New random owner/application credentials and new PostgreSQL/Kafka data were created. All runtime/data paths were checked to remain under the clone, and both passwords differ from the original project.
 
-Required check: anonymous clone of the published repository into a new directory, no copied `.local` settings/data/passwords, execute README setup/start/test/stop on Windows x64. Download-cache reuse is permitted only for the exact pinned, SHA-256-verified distribution archives; it must not reuse extracted runtimes or databases. Existing Maven/npm package caches and installed Edge are machine prerequisites/caches, not hermetic isolation, and must be disclosed.
+The first attempt exposed a Windows first-start pg_ctl inherited-output-handle hang. It was stopped gracefully, fixed in commit `d45cc1853d31633a5c070add509f4c861e1db7a3`, pulled anonymously into that same independently initialized clone, and rerun. The failed attempt is retained locally; it is not presented as passing.
 
-The original demo must be stopped first because the documented ports are fixed; restore it after the check. Preserve both ledgers. Docker and a second operating system remain unverified unless actually executed. The exact clone path, tested source commit, commands and outcome will be added after the run.
+Commands: `Setup-FINOS.ps1 -DownloadCache <pinned-archive-cache>`, `Start-FINOS.ps1 -NoBrowser`, `Test-FINOS.ps1 -BrowserChannel msedge -LiveFx`, `Stop-FINOS.ps1`. Completion: 2026-11-02T10:47:12Z. **13 backend tests, eight browser tests, two HTTP/live-FX checks and build passed.** See `docs/clean-clone-verification.json` for sanitized results. Original app/data were restored afterward.
+
+Scope: same Windows machine, existing Maven/npm caches and installed Edge; not a fresh VM or hermetic environment. No original runtime settings, credentials or ledger data were copied. The later archived-simulator identifier correction was separately verified through all eight original-app browser tests, a direct archived settlement and build; it is not falsely attributed to this earlier clone run. Docker and another operating system remain unverified.

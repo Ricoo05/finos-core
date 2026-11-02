@@ -9,3 +9,9 @@ The workflow runs real PostgreSQL/Kafka, all 13 Java tests with a zero-skip asse
 Prior successful baseline CI: [run 41420409455](https://github.com/Ricoo05/finos-core/actions/runs/41420409455), before this readiness update. It does not verify the new changes. Publication-candidate hosted run is pending upload; exact commit/run/conclusion will be recorded in `FINAL_GITHUB_STATUS.md` after execution. A pending run must not be described as passing.
 
 Known benign local warning: Playwright's forced-color output overrides NO_COLOR. No failed check is suppressed to obtain a green result. Docker/healthy Redis and public hosting are outside this tested matrix.
+
+## Observed hosted and clean-clone results
+
+Run 41430137922 completed successfully for implementation 807e563. Downloaded artifacts confirm 13 Java tests with zero failures/errors/skips and eight browser tests with zero failures/skips/flakes. OSV and full-history secret scan passed their configured policy. The core provider-dependent HTTP test is intentionally skipped; local and clean-clone live-FX checks passed.
+
+Anonymous independent setup/test passed at d45cc18 after the first-start launcher fix. After the later archived-identifier security correction, build, eight browser checks and direct archived settlement passed locally. Latest hosted verification 41431414604 and CodeQL 41431414639 remain separately observable; record their actual conclusions before declaring them passed. Superseded main runs 41430492297/41431094498/41431094575 were cancelled in favor of the latest source, not recorded as successful.

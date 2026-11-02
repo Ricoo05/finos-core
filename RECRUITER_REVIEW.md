@@ -21,3 +21,7 @@ Fifteen review criteria:
 15. Candidate understanding: 15 exercises provided; AI assistance disclosed, understanding cannot be certified by automation.
 
 The strongest interview story is the failure model and verifiable invariants. Main weaknesses are single-node architecture, absent production auth/operations, unmeasured capacity and limited platform verification. These are acceptable portfolio boundaries when stated clearly; adding more bank logos or speculative features would not improve the evidence.
+
+## Updated review after publication and clean setup
+
+**85/100:** correctness 22/25, tests/CI 17/20, reproducibility 12/15, documentation 13/15, security 7/10, demo 9/10, presentation 5/5. Public anonymous access and independent setup now have executed evidence; later security reruns remain explicitly pending rather than assumed green. This is a credible portfolio demonstration, not proof of production maturity or interview mastery.

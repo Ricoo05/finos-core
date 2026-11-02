@@ -1,9 +1,11 @@
-# FINOS-Core publication status
+# FINOS-Core publication status — 2 November 2026
 
-Repository: [Ricoo05/finos-core](https://github.com/Ricoo05/finos-core).
+**Public repository:** [Ricoo05/finos-core](https://github.com/Ricoo05/finos-core). Anonymous repository, MIT license and actual demo-video requests returned HTTP 200. Recruiters can inspect the source and recording without signing in.
 
-Public visibility was enabled on 2 November 2026 after explicit owner authorization. Anonymous repository API, MIT license and demo-recording access returned HTTP 200. Published implementation: `807e563decbe28a209cc3fe1d1ad911bb93b00f2`. [Verification run 41430137922](https://github.com/Ricoo05/finos-core/actions/runs/41430137922) is in progress. A fresh anonymous clone is executing setup/tests; its final result remains pending.
+- **PASS:** updated financial implementation, local 13 backend + eight browser + two HTTP/live-FX checks and frontend build.
+- **PASS:** anonymous independent setup/test after the first-start Windows launcher fix; see `CLEAN_CLONE_VERIFICATION.md` and its sanitized evidence.
+- **PASS:** [hosted verification of implementation 807e563](https://github.com/Ricoo05/finos-core/actions/runs/41430137922), including 13 Java tests with zero skips, eight Chromium tests, HTTP smoke, build, format, npm audit, OSV applicability review and history secret scan. External live FX is intentionally skipped only in core hosted CI and passed locally.
+- **PASS:** [hosted verification of e6f2063](https://github.com/Ricoo05/finos-core/actions/runs/41431414604). Its CodeQL job completed but retained two simulator-randomness alerts. All remaining archived randomness now uses Web Crypto in `7a3c7c2`; a direct archived settlement and build passed locally. [Final verification](https://github.com/Ricoo05/finos-core/actions/runs/41432406097) and [CodeQL rerun](https://github.com/Ricoo05/finos-core/actions/runs/41432406118) are running. No zero-alert claim is made until the result is checked.
+- **PASS:** only Ricoo05 has repository write/admin access; zero pending collaborator invitations. Main branch protection requires review and three GitHub Actions checks for contributors, blocks force pushes/deletion and requires resolved conversations. Auto-merge disabled; owner retains administrator control. CODEOWNERS assigns all files to Ricoo05. Public visitors can fork/read; they cannot modify this repository. MIT permits reuse in other copies.
 
-The local candidate passed 13 backend, eight browser, two HTTP/live-FX checks and the frontend build. MIT license, actual demo assets, security review, dependency patches, least-privilege migration and reproducible CI checks are prepared.
-
-See `CI_VALIDATION_REPORT.md`, `CLEAN_CLONE_VERIFICATION.md`, `SECURITY_REVIEW.md` and `PUBLICATION_CHECKLIST.md`. Docker, healthy Redis, public interactive hosting and production readiness are not claimed. This file will be updated with the exact published commit, observed hosted run and anonymous access result.
+Two scoped Spring applicability exceptions remain disclosed and expire 2 December 2026. Docker, healthy Redis, public interactive hosting and production readiness are not claimed. The original local app is running with preserved data. No paid resources were used. ForgeX/RUTHLESS/resume were not modified.
