@@ -23,6 +23,8 @@ Open http://127.0.0.1:5173/ . To stop this project's recorded processes while pr
 
 `Setup` installs dependencies and builds the app. `Start` checks readiness before opening the browser. Re-running `Start` reuses this project's processes; it refuses occupied ports belonging to untracked processes. `Stop -AppOnly` leaves PostgreSQL/Kafka running for an app rebuild. Check `.local/*.log` if startup fails.
 
+The native Windows demo retains Kafka logs without time-based expiry to avoid mapped-index rename failures during cleanup. These logs grow with demo use; this is a local development setting. Linux CI uses the container's normal retention policy. A broker restart may take up to a minute to rejoin the consumer group; committed outbox events remain durable during that interval.
+
 If PostgreSQL reports a missing `VCRUNTIME`/`MSVCP` DLL, install Microsoft's supported x64 Visual C++ runtime, then rerun setup. This machine already runs PostgreSQL successfully. Runtime/data/credentials live in `.local` and are excluded from Git. Keep `.local/runtime.json` private. Stop the project before moving its data directory; rerun setup after changing runtime paths.
 
 ## Verify

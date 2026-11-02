@@ -68,7 +68,8 @@ transaction.state.log.min.isr=1
 group.initial.rebalance.delay.ms=0
 num.network.threads=2
 num.io.threads=4
-log.retention.hours=24
+# Retain this small local demo's logs: Windows can reject renaming mapped indexes during expiry.
+log.retention.hours=-1
 "@|Set-Content -LiteralPath $config
 }
 $kafkaData=Get-Content $config|Where-Object{$_ -like 'log.dirs=*'}|ForEach-Object{$_.Substring(9)}
