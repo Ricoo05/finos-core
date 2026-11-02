@@ -1,6 +1,6 @@
 // Query OSV using Maven's resolved dependency graph, including test dependencies.
 // Generate first: mvn -f backend/pom.xml dependency:tree -DoutputType=tgf -DoutputFile=target/dependencies.tgf
-import { readFile, writeFile, readdir } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 
 const source = await readFile("backend/target/dependencies.tgf", "utf8");
 const packages = new Map();
@@ -36,49 +36,11 @@ const findings = body.results.flatMap((result, i) =>
     id: vulnerability.id,
   })),
 );
-const exceptions = JSON.parse(
-  await readFile("scripts/security-exceptions.json", "utf8"),
-);
-const javaPath = "backend/src/main/java/dev/finoscore/";
-const java = (
-  await Promise.all(
-    (await readdir(javaPath))
-      .filter((p) => p.endsWith(".java"))
-      .map((p) => readFile(javaPath + p, "utf8")),
-  )
-).join("\n");
-const pom = await readFile("backend/pom.xml", "utf8");
-// These scoped exceptions depend on this being a REST-only API without view rendering.
-if (
-  /XsltView|ViewResolver|FragmentsRendering|ModelAndView|\.render\s*\(/.test(
-    java,
-  ) ||
-  /thymeleaf|freemarker|groovy-templates/.test(pom)
-)
-  throw new Error(
-    "View rendering was added: reassess the Spring advisory exceptions.",
-  );
-const reviewed = [],
-  unreviewed = [];
-for (const finding of findings) {
-  const exception = exceptions.find(
-    (e) =>
-      e.id === finding.id &&
-      e.package === finding.package.name &&
-      e.version === finding.version &&
-      Date.parse(e.expires) > Date.now(),
-  );
-  (exception ? reviewed : unreviewed).push(
-    exception ? { ...finding, review: exception } : finding,
-  );
-}
 const report = {
   recordedAt: new Date().toISOString(),
   source: "https://api.osv.dev",
   checked: queries.length,
   findings,
-  reviewed,
-  unreviewed,
 };
 await writeFile(
   "backend/target/osv-report.json",
@@ -89,7 +51,4 @@ console.log(
 );
 for (const finding of findings)
   console.log(`${finding.package.name}@${finding.version}: ${finding.id}`);
-console.log(
-  `${reviewed.length} explicitly reviewed, time-limited applicability exceptions; ${unreviewed.length} unreviewed matches.`,
-);
-if (unreviewed.length) process.exitCode = 1;
+if (findings.length) process.exitCode = 1;

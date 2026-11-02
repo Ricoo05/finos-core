@@ -1,0 +1,48 @@
+name: Verify Docker stack
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      FINOS_MARKET_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24.22.1"
+          cache: npm
+      - name: Generate private local configuration and validate Compose
+        run: |
+          node scripts/setup-compose.mjs
+          docker compose --env-file .local/compose.env config --quiet
+      - name: Build and start actual containers
+        run: docker compose --env-file .local/compose.env up -d --build --wait --wait-timeout 240
+      - name: Redis and restart durability simulations
+        run: node scripts/verify-compose.mjs
+      - name: Test production frontend with its actual reverse proxy
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm test
+          npm run test:ui
+      - name: Collect runtime state
+        if: always()
+        run: |
+          docker compose --env-file .local/compose.env ps -a > docker-status.txt
+          docker compose --env-file .local/compose.env logs --no-color > docker-runtime.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: docker-verification
+          path: |
+            .local/docker-verification.json
+            docker-status.txt
+            docker-runtime.log
+            test-results/
+            playwright-report/
+      - name: Stop containers
+        if: always()
+        run: docker compose --env-file .local/compose.env down

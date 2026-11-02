@@ -17,6 +17,12 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U finos_owner -d finos_test"
           --health-interval 5s --health-timeout 5s --health-retries 20
+      redis:
+        image: redis:8-alpine@sha256:21090af93f8324db2f0f0f4f38a7c60369d47d917e000c3423d89d2ae2883537
+        ports: ["16380:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 20
       kafka:
         image: apache/kafka:4.4.0
         env:
@@ -76,7 +82,7 @@ jobs:
           DB_URL: jdbc:postgresql://127.0.0.1:55432/finos_test
           EVENT_MODE: postgres
           TEST_KAFKA: "true"
-        run: mvn -B -f backend/pom.xml verify
+        run: mvn -B -f backend/pom.xml -Predis-integration verify
       - name: Audit resolved Maven dependencies
         run: |
           mvn -B -f backend/pom.xml dependency:tree -DoutputType=tgf -DoutputFile=target/dependencies.tgf
@@ -86,7 +92,7 @@ jobs:
           python3 - <<'PY'
           import glob, xml.etree.ElementTree as ET
           suites=[ET.parse(p).getroot() for p in glob.glob('backend/target/surefire-reports/TEST-*.xml')]
-          assert sum(int(s.attrib['tests']) for s in suites)==13
+          assert sum(int(s.attrib['tests']) for s in suites)==14
           assert all(int(s.attrib.get(k,0))==0 for s in suites for k in ('failures','errors','skipped'))
           PY
       - run: npm ci && npm run format:check && npm audit --audit-level=moderate && npm run build
