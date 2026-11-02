@@ -1,33 +1,33 @@
 {
-  "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring.",
-  "recordedAt": "2026-11-02T10:34:00.9185526Z",
   "suites": [
     {
-      "seconds": 22.975,
+      "seconds": 24.481,
       "tests": 1,
-      "name": "dev.finoscore.KafkaIntegrationTest",
       "failures": 0,
+      "skipped": 0,
       "errors": 0,
-      "skipped": 0
+      "name": "dev.finoscore.KafkaIntegrationTest"
     },
     {
-      "seconds": 3.963,
+      "seconds": 3.615,
       "tests": 11,
-      "name": "dev.finoscore.LedgerIntegrationTest",
       "failures": 0,
+      "skipped": 0,
       "errors": 0,
-      "skipped": 0
+      "name": "dev.finoscore.LedgerIntegrationTest"
     },
     {
-      "seconds": 2.133,
+      "seconds": 2.094,
       "tests": 1,
-      "name": "dev.finoscore.RedisFallbackTest",
       "failures": 0,
+      "skipped": 0,
       "errors": 0,
-      "skipped": 0
+      "name": "dev.finoscore.RedisFallbackTest"
     }
   ],
   "passed": true,
+  "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring.",
+  "recordedAt": "2026-11-02T15:40:44.9821312Z",
   "checks": [
     "13 backend integration tests passed, including real Kafka and Redis outage fallback.",
     "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",

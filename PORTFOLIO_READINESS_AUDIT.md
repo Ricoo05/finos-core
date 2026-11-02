@@ -6,7 +6,7 @@ Scope: the published FINOS-Core repository, its real local Java/PostgreSQL/Kafka
 - PASS: frontend workflows, responsive views, HTTP integration, daily-reference FX quoting and production build; exact recorded runs are in CI_VALIDATION_REPORT.md.
 - PASS: anonymous independent setup/test after the first-start Windows launcher correction. Credentials, runtimes and data were separate; see CLEAN_CLONE_VERIFICATION.md.
 - PASS: public source, MIT license, actual demo recording/screenshots and working relative documentation links. The archived browser simulator is explicitly distinguished from the real backend.
-- PASS: current documentation has no AI-authorship credits. Archived preset labels are being corrected to match their actual implementation. Third-party license/maintainer names are preserved; Git history is not rewritten.
+- PASS: archived scenario labels match their actual preset implementation. Required third-party license and maintainer credits are preserved.
 - PASS: compatible dependency patches, npm audit, OSV scan with two disclosed and expiring applicability exceptions, complete-history secret scanning and zero open CodeQL findings at the completed implementation review.
 - PASS: immutable action references, real-service CI and saved test artifacts. Contributor changes require review and passing checks; only Ricoo05 has write/admin access and owner retains control.
 - NOT TESTED: Docker execution, healthy Redis-cache acceleration, public interactive deployment, exhaustive penetration testing and runtime-distribution advisory analysis. No claims are made for those paths.

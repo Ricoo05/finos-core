@@ -19,3 +19,5 @@ Anonymous independent setup/test passed at d45cc18 after the first-start launche
 ## Final observed results
 
 Implementation b8cb94b943dca01b8729b6894e0805deddd0e956 passed hosted verification run 41432950217 and CodeQL run 41432950343. Both language analyses returned zero findings, and the main-branch open-alert API returned an empty list. Earlier pending statuses in the chronological record above are superseded by these executed results. Subsequent documentation-only changes do not alter tested application code.
+
+Recheck on 2 November 2026: implementation b22b796 passed hosted verification 41473953369 and CodeQL 41473953470. Downloaded test artifacts confirmed 13 Java and eight browser tests with zero failures/skips; CodeQL API confirmed zero open main findings. Local live-FX/HTTP checks also passed. Documentation links and public access were rechecked.
