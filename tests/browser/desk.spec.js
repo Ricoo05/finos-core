@@ -7,6 +7,25 @@ async function navigate(page,name){await page.getByRole('navigation',{name:'Work
 async function ready(page){await page.goto('/');await expect(page.getByText('All balances reconcile')).toBeVisible();}
 const sections=[['Overview','Account positions'],['Settlement','New transfer'],['Journal','Double-entry journal'],['Event pipeline','Outbox delivery'],['Market & scenarios','Settlement analysis'],['Engineering','Running architecture']];
 
+test('default workbench has horizontal navigation, account cards and an inline journal',async({page},testInfo)=>{
+  await page.setViewportSize({width:1024,height:1000});
+  await ready(page);
+  await expect(page.getByRole('navigation',{name:'Workspace'}).getByRole('button',{name:'Settlement',exact:true})).toHaveAttribute('aria-current','page');
+  await expect(page.getByRole('heading',{name:'New transfer',exact:true})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Double-entry journal',exact:true})).toBeVisible();
+  const cards=page.locator('.account-grid>.account-card');
+  await expect(cards).toHaveCount(4);
+  const first=await cards.nth(0).boundingBox(),second=await cards.nth(1).boundingBox();
+  expect(second.x).toBeGreaterThan(first.x);
+  expect(second.y).toBe(first.y);
+  await page.screenshot({path:testInfo.outputPath('workbench-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:1000});
+  const mobileFirst=await cards.nth(0).boundingBox(),mobileSecond=await cards.nth(1).boundingBox();
+  expect(mobileSecond.x).toBe(mobileFirst.x);
+  expect(mobileSecond.y).toBeGreaterThan(mobileFirst.y);
+  await page.screenshot({path:testInfo.outputPath('workbench-mobile.png'),fullPage:true});
+});
+
 test('all six views render at desktop and mobile sizes without page overflow',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await ready(page);
