@@ -1459,14 +1459,14 @@ export default function App() {
     const pipTimer = setInterval(() => {
       if (!isMounted) return;
       setLiveMarketFeed((prev) => {
-        const delta = (secureRandomUnit() - 0.495) * 0.012;
+        const delta = (secureRandomInt(1000000) - 495000) * 0.000000012;
         const nextUsdInr = Number(Math.max(83.1, prev.USD_INR + delta).toFixed(4));
-        const btcDelta = (secureRandomUnit() - 0.49) * 18.5;
+        const btcDelta = (secureRandomInt(1000000) - 490000) * 0.0000185;
         return {
           ...prev,
           USD_INR: nextUsdInr,
-          EUR_INR: Number((nextUsdInr * 1.0812 + (secureRandomUnit() - 0.5) * 0.01).toFixed(4)),
-          GBP_INR: Number((nextUsdInr * 1.2872 + (secureRandomUnit() - 0.5) * 0.01).toFixed(4)),
+          EUR_INR: Number((nextUsdInr * 1.0812 + (secureRandomInt(1000000) - 500000) * 0.00000001).toFixed(4)),
+          GBP_INR: Number((nextUsdInr * 1.2872 + (secureRandomInt(1000000) - 500000) * 0.00000001).toFixed(4)),
           BTC_USD: prev.wsConnected ? prev.BTC_USD : Number((prev.BTC_USD + btcDelta).toFixed(2)),
           tickDirection: delta >= 0 ? 'UP' : 'DOWN',
           tickCount: prev.tickCount + 1,
@@ -2612,7 +2612,7 @@ export default function App() {
     ];
 
     const timer = setInterval(() => {
-      const pick = rails[Math.floor(secureRandomUnit() * rails.length)];
+      const pick = rails[secureRandomInt(rails.length)];
       const src = INITIAL_ACCOUNTS[pick.srcIdx];
       const dst = INITIAL_ACCOUNTS[pick.dstIdx];
       let spot = 1.0;
