@@ -15,3 +15,7 @@ Known benign local warning: Playwright's forced-color output overrides NO_COLOR.
 Run 41430137922 completed successfully for implementation 807e563. Downloaded artifacts confirm 13 Java tests with zero failures/errors/skips and eight browser tests with zero failures/skips/flakes. OSV and full-history secret scan passed their configured policy. The core provider-dependent HTTP test is intentionally skipped; local and clean-clone live-FX checks passed.
 
 Anonymous independent setup/test passed at d45cc18 after the first-start launcher fix. After the later archived-identifier security correction, build, eight browser checks and direct archived settlement passed locally. Latest hosted verification 41431414604 and CodeQL 41431414639 remain separately observable; record their actual conclusions before declaring them passed. Superseded main runs 41430492297/41431094498/41431094575 were cancelled in favor of the latest source, not recorded as successful.
+
+## Final observed results
+
+Implementation b8cb94b943dca01b8729b6894e0805deddd0e956 passed hosted verification run 41432950217 and CodeQL run 41432950343. Both language analyses returned zero findings, and the main-branch open-alert API returned an empty list. Earlier pending statuses in the chronological record above are superseded by these executed results. Subsequent documentation-only changes do not alter tested application code.

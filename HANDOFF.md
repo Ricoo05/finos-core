@@ -1,19 +1,9 @@
-# FINOS-Core status
+# Maintainer handoff
 
-The local portfolio implementation and finishing work are complete. See README.md for setup/architecture and DEMO.md for the five-minute walkthrough.
+FINOS-Core is public at https://github.com/Ricoo05/finos-core. Final tested implementation: b8cb94b. Hosted verification 41432950217 and CodeQL 41432950343 passed; both language analyses returned zero findings. Local and independent-clone checks passed 13 backend, eight browser and two HTTP/live-FX tests plus build.
 
-Verified locally on 31 October 2026:
+The original local stack is restored at http://127.0.0.1:5173/. Use Setup-FINOS.ps1, Start-FINOS.ps1, Stop-FINOS.ps1 and Test-FINOS.ps1 as documented. Runtime credentials/data remain ignored in .local. Stop the API before repackaging its JAR on Windows; use new Flyway migrations rather than editing applied ones. Do not run simultaneous integration suites against one test database.
 
-- All 12 backend integration tests passed, including actual Kafka delivery/dead-letter handling and Redis outage fallback.
-- Five browser tests passed, covering all six views at 320, 390, 768 and 1440px, settlement and replay after reload, input validation, freezing, relay backlog recovery, and reconnect.
-- HTTP settlement/Kafka/SSE smoke test and the actual provider/FX quote check passed.
-- Frontend production build passed; reconciliation has zero drift.
-- Start/stop scripts track only this project's processes, including creation time and command identity. Setup uses pinned runtime checksums and a clean npm lockfile.
+Main is protected for contributors and all files have Ricoo05 as code owner. Owner retains administrator control. Dependency update PRs require review; none were merged automatically. Two scoped Spring applicability exceptions expire 2 December 2026. Docker, healthy Redis, production authentication, HA and public interactive deployment are outside the verified scope.
 
-Normal runtime: Java 21, PostgreSQL 16, single-broker Kafka, React/Vite. Redis is disabled. The app and infrastructure use loopback ports 5173, 8080, 55432, 19092/19093. Runtime paths and private credentials stay in ignored .local/runtime.json. Original Gemini context remains in ignored reference/.
-
-GitHub destination: https://github.com/Ricoo05/finos-core (private). Hosted CI status must be checked in Actions; local evidence alone does not establish a hosted CI pass.
-
-Keep applied Flyway migrations immutable. Use a new migration for schema changes. Stop the API before repackaging its JAR on Windows. Do not run concurrent backend test suites against one database.
-
-Keep future changes focused on observed issues. Do not add bank affiliation, invented performance metrics, or additional infrastructure without a concrete requirement. Healthy Redis-cache behavior, broker HA, public authentication and production deployment are outside the verified scope.
+Keep subsequent work focused. See the final status and audit reports for exact evidence; do not introduce unsupported bank affiliation, production or performance claims.

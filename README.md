@@ -100,10 +100,10 @@ Single-primary PostgreSQL and one Kafka broker keep failure semantics inspectabl
 
 This local deployment has no user authentication, bank connection, broker high availability, multi-region failover, or production regulatory controls. Keep it local. API errors use structured problem details; the origin filter rejects external browser origins and non-local hostnames. These controls do not replace authentication for a public deployment.
 
-The archived Gemini simulator is reachable at `/?mode=simulator` and explicitly labeled. Its original source, PDF and conversation are retained privately in ignored `reference/`; they are context rather than verification evidence. Review those files before any redistribution. The portfolio's strongest claim is demonstrable behavior under concurrency, retries and failure.
+The archived browser simulator is reachable at `/?mode=simulator` and explicitly labeled. Its original source, PDF and conversation are retained privately in ignored `reference/`; they are context rather than verification evidence. Review those files before any redistribution. The portfolio's strongest claim is demonstrable behavior under concurrency, retries and failure.
 
 ## Review and contribution
 
-Project code is [MIT licensed](LICENSE). See [dependency/provenance notes](THIRD_PARTY_NOTICES.md), [security scope](SECURITY.md), [executed security review](SECURITY_REVIEW.md), [contribution checks](CONTRIBUTING.md), and [15 implementation questions and exercises](INTERVIEW_GUIDE.md). Development used AI assistance; the candidate should explain and demonstrate the implementation rather than claim independent authorship of every line.
+Project code is [MIT licensed](LICENSE). See [dependency/provenance notes](THIRD_PARTY_NOTICES.md), [security scope](SECURITY.md), [executed security review](SECURITY_REVIEW.md), [contribution checks](CONTRIBUTING.md), and [15 implementation questions and exercises](INTERVIEW_GUIDE.md).
 
 The readiness reports distinguish local tests, hosted CI and clean-clone verification. Docker and a public interactive deployment are not offered as verified run paths. The two reviewed Spring dependency matches and their expiry are disclosed in `SECURITY_REVIEW.md`; no zero-vulnerability claim is made for Java.

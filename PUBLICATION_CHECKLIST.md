@@ -1,19 +1,15 @@
-# Publication checklist — FINOS-Core only
+# Publication checklist — completed 2 November 2026
 
-- PASS: user explicitly requested public recruiter access on 2 November 2026.
-- PASS: owner delegated license choice; MIT added for project code, dependency/provenance notes separated.
-- PASS: real app screenshots/recording reviewed; fictional funds, no credentials/customer data in those assets.
-- PASS: ignored original PDFs/conversation/resume/runtime credentials are not publication artifacts.
-- PASS: local full post-update suite: 13 Java, eight browser, two HTTP/live-FX checks and build.
-- PASS: npm advisory check; Maven patches with two disclosed, scoped, expiring applicability exceptions.
-- PASS: immutable CI action references, meaningful integration coverage and report artifacts configured.
-- PASS: publication commit pushed; Gitleaks scanned all seven commits with no matches. New hosted CI remains in progress.
-- PASS: existing `Ricoo05/finos-core` is public; anonymous repository, license and recording access returned HTTP 200.
-- PENDING: isolated clean-clone setup/test with fresh runtime settings and database.
-- NOT TESTED: Docker, healthy Redis path, public interactive hosting and comprehensive runtime vulnerability assessment. These are not advertised as working.
+- PASS: explicit public-visibility authorization and delegated MIT license selection.
+- PASS: existing Ricoo05/finos-core public; anonymous source/license/recording/CODEOWNERS access verified.
+- PASS: current documentation focuses on implementation and evidence; wording cleanup published.
+- PASS: real local screenshots/recording reviewed; fictional funds, no customer data or credentials in those assets.
+- PASS: private reference documents, resume, runtime data and credentials excluded from Git.
+- PASS: 13 backend, eight browser, two HTTP/live-FX checks and frontend build locally and in the independent clone.
+- PASS: final hosted verification 41432950217; exact tested implementation b8cb94b.
+- PASS: CodeQL 41432950343, zero results in both languages and zero open main alerts.
+- PASS: compatible dependency updates, npm audit, Maven OSV policy with two disclosed expiring applicability exceptions, history secret scans.
+- PASS: owner-only write access, no invitations, protected main, code-owner review/check requirements, force-push/deletion blocks, auto-merge disabled; owner retains admin control.
+- NOT TESTED: Docker, healthy Redis path, public interactive hosting, comprehensive runtime-distribution vulnerability analysis. These are not advertised as verified features.
 
-No ForgeX/RUTHLESS/resume/profile settings are part of this publication. No history rewriting, duplicate repositories or paid resources are required.
-
-## Completed publication follow-up
-
-Public source, license and demo access verified anonymously. Independent clone setup/test passed after the first-start launcher fix (13 Java, eight browser, two HTTP/live-FX checks and build). Owner-only write access, no invitations, protected main and disabled auto-merge verified. See FINAL_GITHUB_STATUS.md for exact CI links and remaining scan status. No Docker or public-service deployment claim is made.
+No duplicate repositories, paid resources, history rewriting or unrelated project changes. Exact evidence and limitations: FINAL_GITHUB_STATUS.md, CI_VALIDATION_REPORT.md, SECURITY_REVIEW.md, CLEAN_CLONE_VERIFICATION.md and DEMO_VERIFICATION.md.

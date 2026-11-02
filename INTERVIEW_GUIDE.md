@@ -1,6 +1,6 @@
 # Explain and demonstrate the implementation
 
-This project was developed with AI assistance. Read and run the code before presenting it. Describe what you understand, changed and verified; do not imply independent authorship of every line or production banking experience.
+Use these questions to explain the implementation, demonstrate its behavior and discuss its tradeoffs.
 
 1. **What does a timeout mean?** The client does not know whether commit happened. Replay the same key and payload; a new key can create a second business operation. Exercise: send a transfer, reload the desk, then recover its receipt.
 2. **Where is the transaction boundary?** In `LedgerService`, balances, transfer, journal, receipt and outbox share one PostgreSQL transaction. Exercise: locate the injected-outbox-failure test and explain each rollback assertion.

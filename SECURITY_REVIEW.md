@@ -17,10 +17,16 @@ Exact package/version/ID exceptions expire on 2 December 2026 in `scripts/securi
 
 ## Explicit limits
 
-No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration test, exhaustive runtime-distribution advisory scan or model-security certification. API startup still receives migration-owner credentials. Redis's healthy-cache path is unverified. Docker is not installed and is not claimed as verified. No AI model calls are part of the main settlement engine, so model prompt-injection evaluation is not applicable to its current behavior.
+No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration test, exhaustive runtime-distribution advisory scan or model-security certification. API startup still receives migration-owner credentials. Redis's healthy-cache path is unverified. Docker is not installed and is not claimed as verified. The main settlement engine does not call external language models.
 
 ## Hosted source analysis and launcher review
 
 CodeQL completed Java and JavaScript analysis on commit 883d02a. It reported two insecure-randomness findings in the archived simulator; these are being corrected with Web Crypto for UUIDs, trace IDs and request identifiers. The identifier-only correction left two findings because simulated amounts also flow into request hashing; all remaining simulation randomness now uses Web Crypto in 7a3c7c2. A new CodeQL run must establish resolution; do not describe the earlier scan as zero-alert.
 
 The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. The repeated independent setup/test passed: 13 Java, eight browser and two HTTP/live-FX checks plus build; see CLEAN_CLONE_VERIFICATION.md.
+
+## Final security result
+
+Implementation b8cb94b passed CodeQL run 41432950343: zero Java results, zero JavaScript results, zero open main-branch alerts verified through the repository API. All archived randomness uses Web Crypto; rail selection and simulated pricing use rejection-sampled integers rather than rounded random fractions. Earlier findings were corrected without dismissals. Full verification run 41432950217 passed. Independent setup/test passed after the Windows launcher correction. Earlier in-progress statements above are historical and superseded by these results.
+
+The two documented Spring applicability exceptions remain, with expiry and source references. CodeQL success is not a claim of production security or zero dependency advisories.
