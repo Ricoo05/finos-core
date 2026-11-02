@@ -38,7 +38,7 @@ jobs:
         with:
           name: docker-verification
           path: |
-            .local/docker-verification.json
+            docker-verification.json
             docker-status.txt
             docker-runtime.log
             test-results/

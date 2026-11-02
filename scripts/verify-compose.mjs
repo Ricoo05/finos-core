@@ -58,7 +58,7 @@ const key = randomUUID(),
 const first = await settle(key, payload);
 assert.equal(first.replayed, false);
 const cached = await settle(key, payload);
-assert.equal(cached.tier, "REDIS");
+assert.equal(cached.servedBy, "REDIS");
 assert.equal(cached.replayed, true);
 assert.deepEqual(cached.receipt, first.receipt);
 assert.equal(
@@ -68,15 +68,18 @@ assert.equal(
 
 compose("stop", "redis");
 const fallback = await settle(key, payload);
-assert.equal(fallback.tier, "POSTGRES");
+assert.equal(fallback.servedBy, "POSTGRES");
 assert.deepEqual(fallback.receipt, first.receipt);
 const outageKey = randomUUID(),
   outagePayload = transfer(outageKey);
 const outage = await settle(outageKey, outagePayload);
 assert.equal(outage.replayed, false);
-assert.equal(outage.tier, "POSTGRES");
+assert.equal(outage.servedBy, "POSTGRES");
 compose("start", "redis");
-await waitFor(async () => (await settle(key, payload)).tier === "REDIS", 45);
+await waitFor(
+  async () => (await settle(key, payload)).servedBy === "REDIS",
+  45,
+);
 
 assert.equal((await request("/pipeline/pause", { paused: true })).status, 200);
 const pendingKey = randomUUID(),
@@ -113,7 +116,7 @@ assert.equal(final.reconciliation.healthy, true);
 assert.equal(final.reconciliation.globalSumMinor, "0");
 assert.equal(final.counts.pending, 0);
 await writeFile(
-  ".local/docker-verification.json",
+  "docker-verification.json",
   JSON.stringify(
     {
       passed: true,

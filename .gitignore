@@ -10,3 +10,4 @@ node_modules.pnpm-backup/
 node_modules.incomplete/
 reference/
 secrets-report.json
+docker-verification.json

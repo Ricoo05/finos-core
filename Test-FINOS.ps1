@@ -37,7 +37,7 @@ try {
     Invoke-FinosNpm $settings @('run','build')
   }
   $checks.Add('Frontend production build passed.')
-  @{passed=$true;recordedAt=(Get-Date).ToUniversalTime().ToString('o');checks=$checks;suites=$suites;scope="Local PostgreSQL and single-broker Kafka. Browser checks included: $(-not $SkipBrowser). Live FX check included: $([bool]$LiveFx). Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring."}|ConvertTo-Json -Depth 5|Set-Content public/verification.json
+  @{passed=$true;recordedAt=(Get-Date).ToUniversalTime().ToString('o');checks=$checks;suites=$suites;scope="Local PostgreSQL and single-broker Kafka. Browser checks included: $(-not $SkipBrowser). Live FX check included: $([bool]$LiveFx). Healthy Redis integration is a separate CI/Docker check; this native run verifies outage fallback. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring."}|ConvertTo-Json -Depth 5|Set-Content public/verification.json
   # Include the just-recorded evidence in the export as well as the dev server.
   Copy-Item -LiteralPath public/verification.json -Destination dist/verification.json
   Write-Output 'All requested checks passed. Evidence: public/verification.json'
