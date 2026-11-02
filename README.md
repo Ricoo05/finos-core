@@ -1,5 +1,7 @@
 # FINOS-Core
 
+**Maintainer:** Arhit Bhardwaj · [Ricoo05](https://github.com/Ricoo05)
+
 A local settlement engineering project: a Java 21/Spring Boot 4 double-entry ledger, retry-safe API, Kafka event delivery, and a React operations desk. Uses fictional accounts and demo funds. Independent project; no FINOS or bank affiliation.
 
 [![Verify FINOS-Core](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml)
