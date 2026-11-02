@@ -1,0 +1,11 @@
+node_modules
+dist
+.local
+backend/target
+reference
+playwright-report
+test-results
+# Archived source is retained verbatim rather than reformatted.
+src/LegacySimulator.jsx
+package-lock.json
+public/verification.json

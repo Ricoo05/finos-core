@@ -9,3 +9,4 @@ test-results/
 node_modules.pnpm-backup/
 node_modules.incomplete/
 reference/
+secrets-report.json

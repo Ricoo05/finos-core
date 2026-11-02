@@ -1,46 +1,38 @@
 {
-  "recordedAt": "2026-11-02T09:28:45.3010686Z",
-  "checks": [
-    "12 backend integration tests passed, including real Kafka and Redis outage fallback.",
-    "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
-    "Live FX check: provider available, timestamp fresh, server quote returned.",
-    "Frontend production build passed.",
-    "8 browser tests passed: responsive layout, settlement/replay, freeze, backlog recovery, error recovery, FX quote/settlement, sensitivity slider and archived simulator.",
-    "Full-stack restart: queued event recovered and original receipt replayed without a second debit.",
-    "Recorded UI simulation: two demo transfers, replay, tamper rejection, backlog recovery and event deduplication passed."
-  ],
-  "scope": "Verified locally with PostgreSQL and single-broker Kafka. Backend, browser, HTTP/live FX, restart/replay and demo scenarios passed. CI status is recorded separately below. Redis remains disabled; its outage fallback is tested, while the healthy-cache path is unverified.",
-  "passed": true,
+  "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring.",
+  "recordedAt": "2026-11-02T10:34:00.9185526Z",
   "suites": [
     {
+      "seconds": 22.975,
+      "tests": 1,
       "name": "dev.finoscore.KafkaIntegrationTest",
-      "tests": 1,
+      "failures": 0,
       "errors": 0,
-      "seconds": 21.23,
-      "skipped": 0,
-      "failures": 0
+      "skipped": 0
     },
     {
+      "seconds": 3.963,
+      "tests": 11,
       "name": "dev.finoscore.LedgerIntegrationTest",
-      "tests": 10,
+      "failures": 0,
       "errors": 0,
-      "seconds": 3.126,
-      "skipped": 0,
-      "failures": 0
+      "skipped": 0
     },
     {
-      "name": "dev.finoscore.RedisFallbackTest",
+      "seconds": 2.133,
       "tests": 1,
+      "name": "dev.finoscore.RedisFallbackTest",
+      "failures": 0,
       "errors": 0,
-      "seconds": 1.662,
-      "skipped": 0,
-      "failures": 0
+      "skipped": 0
     }
   ],
-  "ci": {
-    "conclusion": "success",
-    "commit": "b4df5b567a0639961f9a0c39ceb453c41bd84380",
-    "status": "completed",
-    "url": "https://github.com/Ricoo05/finos-core/actions/runs/41420409455"
-  }
+  "passed": true,
+  "checks": [
+    "13 backend integration tests passed, including real Kafka and Redis outage fallback.",
+    "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
+    "Live FX check: provider available, timestamp fresh, server quote returned.",
+    "8 browser tests passed: six views, 320–1440px widths, retry after reload, freeze, backlog recovery, reconnect, FX form, scenario and archived simulator.",
+    "Frontend production build passed."
+  ]
 }

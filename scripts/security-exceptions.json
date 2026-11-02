@@ -1,0 +1,18 @@
+[
+  {
+    "id": "GHSA-j9f9-w8pj-32f8",
+    "package": "org.springframework:spring-webmvc",
+    "version": "6.2.19",
+    "expires": "2026-12-02T00:00:00Z",
+    "reason": "Api.events sends fixed refresh strings/timestamps through SseEmitter; no view fragments are rendered. Vendor advisory requires SSE view fragments. No OSS 6.2 patch is available; do not mix Spring 7 into Boot 3.5.",
+    "source": "https://spring.io/security/cve-2026-47890/"
+  },
+  {
+    "id": "GHSA-pc63-qcmh-9cmg",
+    "package": "org.springframework:spring-webmvc",
+    "version": "6.2.19",
+    "expires": "2026-12-02T00:00:00Z",
+    "reason": "REST controllers return JSON or fixed SSE refresh events. No XsltView, view resolver or wildcard view-rendering mapping exists. Vendor exploit prerequisites are absent; revisit when adding server-rendered views or upgrading Boot.",
+    "source": "https://spring.io/security/cve-2026-47884/"
+  }
+]

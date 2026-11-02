@@ -109,6 +109,21 @@ class LedgerIntegrationTest {
         assertThrows(org.springframework.dao.DataAccessException.class,()->db.update("UPDATE accounts SET balance=balance+1 WHERE id=?",UUID.fromString(a)));
         assertEquals(true,ledger.reconcile().get("healthy"));
     }
+    void assertPermissionDenied(org.junit.jupiter.api.function.Executable action) {
+        var error=assertThrows(org.springframework.dao.DataAccessException.class,action);
+        assertInstanceOf(SQLException.class,error.getMostSpecificCause());
+        assertEquals("42501",((SQLException)error.getMostSpecificCause()).getSQLState());
+    }
+    @Test void runtimeRoleCannotRewritePolicyHashesOrEventPayloads() {
+        var result=ledger.transfer(key(),request(a,b,"1234"));
+        UUID event=UUID.fromString(result.receipt().get("eventId").toString());
+        assertPermissionDenied(()->db.update("UPDATE accounts SET allow_overdraft=true WHERE id=?",UUID.fromString(a)));
+        assertPermissionDenied(()->db.update("UPDATE accounts SET currency='USD' WHERE id=?",UUID.fromString(a)));
+        assertPermissionDenied(()->db.update("UPDATE idempotency_keys SET request_hash='tampered'"));
+        assertPermissionDenied(()->db.update("UPDATE outbox SET payload='{}'::jsonb WHERE id=?",event));
+        assertPermissionDenied(()->db.update("INSERT INTO accounts(id,name,allow_overdraft) VALUES (?,'UNSAFE',true)",UUID.randomUUID()));
+        assertEquals(true,ledger.reconcile().get("healthy"));
+    }
     @Test void outboxFailureRollsBackMoneyAndIdempotencyClaim() throws Exception {
         long before=balance(a),entries=count("ledger_entries");String k=key();var r=request(a,b,"1234");
         ownerSql("CREATE FUNCTION test_fail_outbox() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RAISE EXCEPTION 'Injected outbox failure'; END$$; CREATE TRIGGER test_fail BEFORE INSERT ON outbox FOR EACH ROW EXECUTE FUNCTION test_fail_outbox();");

@@ -17,9 +17,9 @@ try {
     @{name=$r.testsuite.name;tests=[int]$r.testsuite.tests;failures=[int]$r.testsuite.failures;errors=[int]$r.testsuite.errors;skipped=[int]$r.testsuite.skipped;seconds=[double]$r.testsuite.time}
   })
   $total=($suites|ForEach-Object{$_.tests}|Measure-Object -Sum).Sum
-  if($total -ne 12 -or ($suites|Where-Object{$_.failures -or $_.errors -or $_.skipped})){throw 'Expected all 12 backend tests, including Kafka, without skips.'}
+  if($total -ne 13 -or ($suites|Where-Object{$_.failures -or $_.errors -or $_.skipped})){throw 'Expected all 13 backend tests, including Kafka, without skips.'}
   $checks=[Collections.Generic.List[string]]::new()
-  $checks.Add('12 backend integration tests passed, including real Kafka and Redis outage fallback.')
+  $checks.Add('13 backend integration tests passed, including real Kafka and Redis outage fallback.')
   Invoke-FinosEnvironment @{LIVE_FX=([string][bool]$LiveFx).ToLowerInvariant();PATH=((Split-Path $settings.node)+';'+$env:PATH);FINOS_BROWSER_CHANNEL=$BrowserChannel} {
     Invoke-FinosNpm $settings @('test')
     $checks.Add('HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.')

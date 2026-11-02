@@ -2,6 +2,12 @@
 
 A local settlement engineering project: a durable double-entry ledger, retry-safe API, Kafka event delivery, and a React operations desk. Uses fictional accounts and demo funds. Independent project; no FINOS or bank affiliation.
 
+[![Verify FINOS-Core](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml)
+
+**Review in one minute:** inspect the [real demo recording](docs/demo/settlement-retry-recovery.webm), [five-minute walkthrough](DEMO.md), [financial integration tests](backend/src/test/java/dev/finoscore/LedgerIntegrationTest.java) and [verification status](FINAL_GITHUB_STATUS.md). The recording shows the local Java/PostgreSQL/Kafka system; it is not a publicly hosted banking service.
+
+![Actual local desk after settlement, retry and event recovery](docs/demo/overview.png)
+
 **Problem:** a client retries after a timeout, while a downstream event consumer is unavailable. The transfer must commit once, remain balanced, and eventually reach the flow projection without being counted twice.
 
 ## Run on Windows x64
@@ -33,7 +39,7 @@ If PostgreSQL reports a missing `VCRUNTIME`/`MSVCP` DLL, install Microsoft's sup
 ./Test-FINOS.ps1 -BrowserChannel msedge -LiveFx
 ```
 
-This runs all 12 backend integration tests against the separate `finos_test` database, the HTTP smoke check, eight browser checks, and a production frontend build. Browser checks cover the workbench, responsive views, transfers/retries, freezing, backlog recovery, reconnect, FX quoting/settlement and the scenario/archive views. `-LiveFx` additionally checks the actual external provider and a server-issued quote; omit it when offline. Without `-BrowserChannel`, Playwright downloads its own Chromium. `-SkipBrowser` runs the other checks only.
+This runs all 13 backend integration tests against the separate `finos_test` database, the HTTP smoke check, eight browser checks, and a production frontend build. Browser checks cover the workbench, responsive views, transfers/retries, freezing, backlog recovery, reconnect, FX quoting/settlement and the scenario/archive views. `-LiveFx` additionally checks the actual external provider and a server-issued quote; omit it when offline. Without `-BrowserChannel`, Playwright downloads its own Chromium. `-SkipBrowser` runs the other checks only.
 
 Tests post small amounts of demo funds and leave an auditable history. Backend fixtures return their temporary balances after each test. Test and demo databases remain separate. Do not run two integration suites concurrently against the same test database.
 
@@ -95,3 +101,9 @@ Single-primary PostgreSQL and one Kafka broker keep failure semantics inspectabl
 This local deployment has no user authentication, bank connection, broker high availability, multi-region failover, or production regulatory controls. Keep it local. API errors use structured problem details; the origin filter rejects external browser origins and non-local hostnames. These controls do not replace authentication for a public deployment.
 
 The archived Gemini simulator is reachable at `/?mode=simulator` and explicitly labeled. Its original source, PDF and conversation are retained privately in ignored `reference/`; they are context rather than verification evidence. Review those files before any redistribution. The portfolio's strongest claim is demonstrable behavior under concurrency, retries and failure.
+
+## Review and contribution
+
+Project code is [MIT licensed](LICENSE). See [dependency/provenance notes](THIRD_PARTY_NOTICES.md), [security scope](SECURITY.md), [executed security review](SECURITY_REVIEW.md), [contribution checks](CONTRIBUTING.md), and [15 implementation questions and exercises](INTERVIEW_GUIDE.md). Development used AI assistance; the candidate should explain and demonstrate the implementation rather than claim independent authorship of every line.
+
+The readiness reports distinguish local tests, hosted CI and clean-clone verification. Docker and a public interactive deployment are not offered as verified run paths. The two reviewed Spring dependency matches and their expiry are disclosed in `SECURITY_REVIEW.md`; no zero-vulnerability claim is made for Java.
