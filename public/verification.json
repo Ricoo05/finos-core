@@ -1,38 +1,38 @@
 {
+  "recordedAt": "2026-11-02T09:19:53.7106067Z",
   "checks": [
     "12 backend integration tests passed, including real Kafka and Redis outage fallback.",
     "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
     "Live FX check: provider available, timestamp fresh, server quote returned.",
     "Frontend production build passed.",
-    "5 browser tests passed: all six views at 320, 390, 768 and 1440px; settlement/replay after reload, validation, freezing, backlog recovery, and reconnect."
+    "8 browser tests passed: responsive layout, settlement/replay, freeze, backlog recovery, error recovery, FX quote/settlement, sensitivity slider and archived simulator."
   ],
+  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed in this recheck. Healthy Redis cache is not verified. Hosted CI is tracked separately in GitHub Actions. Recorded evidence, not continuous monitoring.",
+  "passed": true,
   "suites": [
     {
-      "failures": 0,
-      "skipped": 0,
-      "seconds": 20.474,
-      "tests": 1,
       "name": "dev.finoscore.KafkaIntegrationTest",
-      "errors": 0
-    },
-    {
-      "failures": 0,
-      "skipped": 0,
-      "seconds": 3.326,
-      "tests": 10,
-      "name": "dev.finoscore.LedgerIntegrationTest",
-      "errors": 0
-    },
-    {
-      "failures": 0,
-      "skipped": 0,
-      "seconds": 1.813,
       "tests": 1,
+      "errors": 0,
+      "seconds": 21.23,
+      "skipped": 0,
+      "failures": 0
+    },
+    {
+      "name": "dev.finoscore.LedgerIntegrationTest",
+      "tests": 10,
+      "errors": 0,
+      "seconds": 3.126,
+      "skipped": 0,
+      "failures": 0
+    },
+    {
       "name": "dev.finoscore.RedisFallbackTest",
-      "errors": 0
+      "tests": 1,
+      "errors": 0,
+      "seconds": 1.662,
+      "skipped": 0,
+      "failures": 0
     }
-  ],
-  "passed": true,
-  "recordedAt": "2026-10-31T11:34:26.1758066Z",
-  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed locally. The first hosted GitHub Actions run also passed: https://github.com/Ricoo05/finos-core/actions/runs/41197540154 . Healthy Redis cache is not verified. Recorded evidence, not continuous monitoring."
+  ]
 }

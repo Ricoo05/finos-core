@@ -51,9 +51,9 @@ export default function App() {
   const [source,setSource]=useState('00000000-0000-0000-0000-000000000101'),[dest,setDest]=useState('00000000-0000-0000-0000-000000000102');
   const [amount,setAmount]=useState('25000.00'),[currency,setCurrency]=useState('INR'),[reference,setReference]=useState(()=>`TX-${fresh().slice(0,12)}`),[key,setKey]=useState(fresh);
   const [quote,setQuote]=useState(null),[receipt,setReceipt]=useState(null),[last,setLast]=useState(()=>{try{return JSON.parse(sessionStorage.getItem('finos-last-request'));}catch{return null;}});
-  const [shock,setShock]=useState(1),[filter,setFilter]=useState(''),[evidence,setEvidence]=useState(null);
+  const [shock,setShock]=useState(1),[filter,setFilter]=useState(''),[evidence,setEvidence]=useState(null),[connectionError,setConnectionError]=useState('');
   const refreshing=useRef(false);
-  const refresh=useCallback(async()=>{if(refreshing.current)return;refreshing.current=true;try{const next=await api('/state');setData(next);setOnline(true);}catch(e){setOnline(false);setError(e.message);}finally{refreshing.current=false;}},[]);
+  const refresh=useCallback(async()=>{if(refreshing.current)return;refreshing.current=true;try{const next=await api('/state');setData(next);setOnline(true);setConnectionError('');}catch(e){setOnline(false);setConnectionError(e.message);}finally{refreshing.current=false;}},[]);
   useEffect(()=>{refresh();const es=new EventSource('/api/events');es.addEventListener('refresh',refresh);es.onerror=()=>setOnline(false);const fallback=setInterval(refresh,10000);return()=>{es.close();clearInterval(fallback);};},[refresh]);
   useEffect(()=>{fetch('/verification.json').then(r=>r.ok?r.json():null).then(setEvidence).catch(()=>{});},[]);
   const run=async(fn)=>{setBusy(true);setError('');setNotice('');try{await fn();await refresh();}catch(e){setError(e.message);}finally{setBusy(false);}};
@@ -90,6 +90,7 @@ export default function App() {
     <nav className="console-tabs" aria-label="Workspace">{tabs.map(([id,label,Icon,title],i)=><button key={id} aria-label={label} aria-current={tab===id?'page':undefined} className={tab===id?'selected':''} onClick={()=>{setTab(id);setError('');}}><Icon size={16}/><span>{i+1}. {title}</span>{id==='market'&&<span className="tab-tag">FX</span>}</button>)}</nav>
     <div className="workspace">
       <main className="content" data-view={tab}>{tab!=='settle'&&<div className="page-heading"><div><div className="eyebrow">FINOS-CORE / {navTitle.toUpperCase()}</div><h2>{navTitle}</h2><p>{tab==='overview'?'Materialized positions, reconciliation and recent settlements.':tab==='journal'?'An append-only history backed by PostgreSQL constraints.':tab==='pipeline'?'Committed transfers, durable delivery and idempotent risk projection.':tab==='market'?'Provider timestamps, reference FX and transparent scenario assumptions.':'Running architecture, recorded tests and system boundaries.'}</p></div><Badge good={audit?.healthy} warn={!audit?.healthy}>{audit?.healthy?<CheckCircle2 size={12}/>:<ShieldCheck size={12}/>} {audit?.healthy?'LEDGER RECONCILED':'AWAITING RECONCILIATION'}</Badge></div>}
+      {connectionError&&<div className="alert error" role="alert"><XCircle size={17}/><span>{connectionError}</span></div>}
       {error&&<div className="alert error" role="alert"><XCircle size={17}/><span>{error}</span><button aria-label="Dismiss error" onClick={()=>setError('')}>×</button></div>}{notice&&<div className="alert success" role="status">{notice}</div>}
       {!data?<Panel title="Connecting to the ledger"><Empty>Waiting for the Java API on port 8080. Start the project with Start-FINOS.ps1.</Empty></Panel>:<>
       {tab==='overview'&&<>

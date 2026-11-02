@@ -107,4 +107,57 @@ test('connection failure is visible and refresh reconnects to the backend',async
   await page.unroute('**/api/state');
   await page.getByRole('button',{name:'Refresh data',exact:true}).click();
   await expect(page.getByText('Server updates every 2s',{exact:true})).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('FX form requires a server quote, settles its exact amount, and preserves the receipt on replay',async({page,request})=>{
+  await ready(page);
+  const initial=await(await request.get('/api/state')).json();
+  await page.getByLabel('Amount',{exact:true}).fill('1.00');
+  await page.getByLabel('Reference',{exact:true}).fill('FX-BROWSER-'+randomUUID());
+  await page.getByLabel('Input currency',{exact:true}).selectOption('USD');
+  await expect(page.getByRole('button',{name:'Post transfer',exact:true})).toBeDisabled();
+  const quoteResponse=page.waitForResponse(r=>r.url().endsWith('/api/quotes')&&r.request().method()==='POST');
+  await page.getByRole('button',{name:'Get reference FX quote',exact:true}).click();
+  const response=await quoteResponse;
+  if(!initial.market.available||initial.market.stale){
+    expect(response.status()).toBe(503);
+    await expect(page.getByRole('alert')).toContainText('Fresh reference FX data is unavailable');
+    await page.getByLabel('Input currency',{exact:true}).selectOption('INR');
+    await expect(page.getByRole('button',{name:'Post transfer',exact:true})).toBeEnabled();
+    return;
+  }
+  expect(response.status()).toBe(200);
+  const quote=await response.json();
+  await expect(page.getByRole('button',{name:'Post transfer',exact:true})).toBeEnabled();
+  const transferResponse=page.waitForResponse(r=>r.url().endsWith('/api/transfers')&&r.request().method()==='POST');
+  await page.getByRole('button',{name:'Post transfer',exact:true}).click();
+  const posted=await transferResponse;expect(posted.status()).toBe(201);
+  const first=await posted.json();
+  expect(first.receipt.amountMinor).toBe(quote.settlementAmountMinor);
+  await expect(page.getByText('COMMITTED',{exact:true})).toBeVisible();
+  const replayResponse=page.waitForResponse(r=>r.url().endsWith('/api/transfers')&&r.request().method()==='POST');
+  await page.getByRole('button',{name:'Replay last request',exact:true}).click();
+  const replay=await(await replayResponse).json();
+  expect(replay.replayed).toBe(true);expect(replay.receipt).toEqual(first.receipt);
+  const after=await(await request.get('/api/state')).json();
+  expect(after.counts.transfers).toBe(initial.counts.transfers+1);
+  expect(after.reconciliation.healthy).toBe(true);
+});
+
+test('translation scenario uses the selected shock and the archived simulator remains explicitly labeled',async({page,request})=>{
+  await ready(page);await navigate(page,'Market & scenarios');
+  const state=await(await request.get('/api/state')).json();
+  await page.locator('#shock').focus();await page.locator('#shock').press('End');
+  await expect(page.locator('.scenario label strong')).toHaveText('+10%');
+  if(state.market.available){
+    const total=state.accounts.reduce((sum,a)=>sum+BigInt(a.balance),0n);
+    const expected=(Number(total)/100/Number(state.market.ratesToInr.USD)/1.1).toLocaleString('en-US',{maximumFractionDigits:2});
+    await expect(page.locator('.scenario-value')).toHaveText('$'+expected);
+  }
+  await page.goto('/?mode=simulator');
+  await expect(page.getByText('ARCHIVED EDUCATIONAL SIMULATOR',{exact:true})).toBeVisible();
+  await expect(page.getByRole('link',{name:'Open the real ledger →'})).toBeVisible();
+  await expect(page.getByText('FINOS-Core could not render',{exact:true})).toHaveCount(0);
+  await expect(page.getByRole('button',{name:/Settlement Workbench/}).first()).toBeVisible();
 });

@@ -32,12 +32,12 @@ try {
       Invoke-FinosNpm $settings @('run','test:ui')
       $browser=Get-Content test-results/browser.json -Raw|ConvertFrom-Json
       if($browser.stats.unexpected -or $browser.stats.skipped){throw 'Browser report contains failures or skips.'}
-      $checks.Add("$($browser.stats.expected) browser tests passed: six views, 320–1440px widths, retry after reload, freeze, backlog recovery and reconnect.")
+      $checks.Add("$($browser.stats.expected) browser tests passed: six views, 320–1440px widths, retry after reload, freeze, backlog recovery, reconnect, FX form, scenario and archived simulator.")
     }
     Invoke-FinosNpm $settings @('run','build')
   }
   $checks.Add('Frontend production build passed.')
-  @{passed=$true;recordedAt=(Get-Date).ToUniversalTime().ToString('o');checks=$checks;suites=$suites;scope="Local PostgreSQL and single-broker Kafka. Browser checks included: $(-not $SkipBrowser). Live FX check included: $([bool]$LiveFx). Healthy Redis cache and hosted CI are not verified. This is a recorded run, not continuous monitoring."}|ConvertTo-Json -Depth 5|Set-Content public/verification.json
+  @{passed=$true;recordedAt=(Get-Date).ToUniversalTime().ToString('o');checks=$checks;suites=$suites;scope="Local PostgreSQL and single-broker Kafka. Browser checks included: $(-not $SkipBrowser). Live FX check included: $([bool]$LiveFx). Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring."}|ConvertTo-Json -Depth 5|Set-Content public/verification.json
   # Include the just-recorded evidence in the export as well as the dev server.
   Copy-Item -LiteralPath public/verification.json -Destination dist/verification.json
   Write-Output 'All requested checks passed. Evidence: public/verification.json'

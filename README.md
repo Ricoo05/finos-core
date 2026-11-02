@@ -31,7 +31,7 @@ If PostgreSQL reports a missing `VCRUNTIME`/`MSVCP` DLL, install Microsoft's sup
 ./Test-FINOS.ps1 -BrowserChannel msedge -LiveFx
 ```
 
-This runs all 12 backend integration tests against the separate `finos_test` database, the HTTP smoke check, six browser checks, and a production frontend build. `-LiveFx` additionally checks the actual external provider and a server-issued quote; omit it when offline. Without `-BrowserChannel`, Playwright downloads its own Chromium. `-SkipBrowser` runs the other checks only.
+This runs all 12 backend integration tests against the separate `finos_test` database, the HTTP smoke check, eight browser checks, and a production frontend build. Browser checks cover the workbench, responsive views, transfers/retries, freezing, backlog recovery, reconnect, FX quoting/settlement and the scenario/archive views. `-LiveFx` additionally checks the actual external provider and a server-issued quote; omit it when offline. Without `-BrowserChannel`, Playwright downloads its own Chromium. `-SkipBrowser` runs the other checks only.
 
 Tests post small amounts of demo funds and leave an auditable history. Backend fixtures return their temporary balances after each test. Test and demo databases remain separate. Do not run two integration suites concurrently against the same test database.
 
