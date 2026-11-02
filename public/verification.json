@@ -1,13 +1,15 @@
 {
-  "recordedAt": "2026-11-02T09:19:53.7106067Z",
+  "recordedAt": "2026-11-02T09:28:45.3010686Z",
   "checks": [
     "12 backend integration tests passed, including real Kafka and Redis outage fallback.",
     "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
     "Live FX check: provider available, timestamp fresh, server quote returned.",
     "Frontend production build passed.",
-    "8 browser tests passed: responsive layout, settlement/replay, freeze, backlog recovery, error recovery, FX quote/settlement, sensitivity slider and archived simulator."
+    "8 browser tests passed: responsive layout, settlement/replay, freeze, backlog recovery, error recovery, FX quote/settlement, sensitivity slider and archived simulator.",
+    "Full-stack restart: queued event recovered and original receipt replayed without a second debit.",
+    "Recorded UI simulation: two demo transfers, replay, tamper rejection, backlog recovery and event deduplication passed."
   ],
-  "scope": "Local PostgreSQL and single-broker Kafka. Backend, browser, HTTP and live FX checks passed in this recheck. Healthy Redis cache is not verified. Hosted CI is tracked separately in GitHub Actions. Recorded evidence, not continuous monitoring.",
+  "scope": "Verified locally with PostgreSQL and single-broker Kafka. Backend, browser, HTTP/live FX, restart/replay and demo scenarios passed. CI status is recorded separately below. Redis remains disabled; its outage fallback is tested, while the healthy-cache path is unverified.",
   "passed": true,
   "suites": [
     {
@@ -34,5 +36,11 @@
       "skipped": 0,
       "failures": 0
     }
-  ]
+  ],
+  "ci": {
+    "conclusion": "success",
+    "commit": "b4df5b567a0639961f9a0c39ceb453c41bd84380",
+    "status": "completed",
+    "url": "https://github.com/Ricoo05/finos-core/actions/runs/41420409455"
+  }
 }
