@@ -18,3 +18,9 @@ Exact package/version/ID exceptions expire on 2 December 2026 in `scripts/securi
 ## Explicit limits
 
 No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration test, exhaustive runtime-distribution advisory scan or model-security certification. API startup still receives migration-owner credentials. Redis's healthy-cache path is unverified. Docker is not installed and is not claimed as verified. No AI model calls are part of the main settlement engine, so model prompt-injection evaluation is not applicable to its current behavior.
+
+## Hosted source analysis and launcher review
+
+CodeQL completed Java and JavaScript analysis on commit 883d02a. It reported two insecure-randomness findings in the archived simulator; these are being corrected with Web Crypto for UUIDs, trace IDs and request identifiers. Simulation price changes still use ordinary randomness intentionally. A new CodeQL run must establish resolution; do not describe the earlier scan as zero-alert.
+
+The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. Fresh independent setup is being repeated and its outcome belongs in CLEAN_CLONE_VERIFICATION.md.

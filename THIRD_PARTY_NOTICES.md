@@ -9,3 +9,5 @@ The Java application directly uses Spring Boot/Framework/Kafka, Flyway, Micromet
 Assets in `docs/demo` are recordings/screenshots of this project's local demo using fictional funds, captured on 2 November 2026. They contain no customer data, API credentials or third-party bank logos. Icons come from lucide-react. There are no stock photos, external templates or copied bank brand assets in the current desk.
 
 `src/LegacySimulator.jsx` is the user-supplied, AI-assisted Gemini prototype retained as an explicitly labeled archive; it is not evidence of deployed Java/PostgreSQL behavior. Bank names in that archive are illustrative references without affiliation. Original PDFs/conversation and resume materials remain outside version control and are not published. No claim of exhaustive third-party provenance certification is made.
+
+The retained simulator has a targeted publication security correction: Web Crypto replaces weak randomness for identifiers. Its visual layout and simulated workflow remain unchanged; original reference files stay private.

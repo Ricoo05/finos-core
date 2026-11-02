@@ -5,7 +5,7 @@ backend/target
 reference
 playwright-report
 test-results
-# Archived source is retained verbatim rather than reformatted.
+# Preserve archived formatting; targeted security corrections are documented.
 src/LegacySimulator.jsx
 package-lock.json
 public/verification.json

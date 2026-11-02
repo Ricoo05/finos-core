@@ -37,20 +37,19 @@ import {
 // ============================================================================
 
 function generateUUIDv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+  return crypto.randomUUID();
 }
 
 function generateHexId(len) {
-  let out = '';
-  const chars = '0123456789abcdef';
-  for (let i = 0; i < len; i++) {
-    out += chars[(Math.random() * 16) | 0];
-  }
-  return out;
+  const bytes = crypto.getRandomValues(new Uint8Array(Math.ceil(len / 2)));
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('').slice(0, len);
+}
+
+function secureRandomInt(limit) {
+  const ceiling = 0x100000000 - (0x100000000 % limit);
+  const value = new Uint32Array(1);
+  do { crypto.getRandomValues(value); } while (value[0] >= ceiling);
+  return value[0] % limit;
 }
 
 // Generates a compliant W3C Trace Context traceparent header: 00-<32hexTraceId>-<16hexSpanId>-01
@@ -2249,7 +2248,7 @@ export default function App() {
       payload: {
         eventId: evtId,
         transactionId: txId,
-        referenceId: `POISON-PILL-${Math.floor(100 + Math.random() * 899)}`,
+        referenceId: `POISON-PILL-${(100 + secureRandomInt(899))}`,
         sourceAccountId: INITIAL_ACCOUNTS[0].id,
         sourceAccountNumber: 'ACC-JPM-OMNI-01',
         destinationAccountId: INITIAL_ACCOUNTS[1].id,
@@ -2556,7 +2555,7 @@ export default function App() {
 
     const amountPaise = Math.round(parseFloat(action.amount) * spot * 100);
     const key = `intel-${action.rail.toLowerCase()}-${Date.now().toString().slice(-6)}`;
-    const ref = `${action.rail}-${Math.floor(1000 + Math.random() * 8999)}`;
+    const ref = `${action.rail}-${(1000 + secureRandomInt(8999))}`;
 
     const res = executeSettlementTransaction(
       key,
@@ -2618,8 +2617,8 @@ export default function App() {
       else if (pick.ccy === 'GBP') spot = liveMarketFeed.GBP_INR;
 
       const amountPaise = Math.round(pick.amt * spot * 100);
-      const key = `autopilot-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      const ref = `AUTO-${pick.rail.slice(0, 6)}-${Math.floor(1000 + Math.random() * 8999)}`;
+      const key = `autopilot-${Date.now()}-${generateHexId(12)}`;
+      const ref = `AUTO-${pick.rail.slice(0, 6)}-${(1000 + secureRandomInt(8999))}`;
 
       const res = executeSettlementTransaction(
         key,
@@ -2655,7 +2654,7 @@ export default function App() {
   // --------------------------------------------------------------------------
   const rotateKeyIfAuto = useCallback(() => {
     if (!autoRotateKeyOnEdit) return;
-    const randNum = Math.floor(10000 + Math.random() * 90000);
+    const randNum = (10000 + secureRandomInt(90000));
     setReferenceId(`TXN-INST-${randNum}`);
     setIdempotencyKey(`idem-${generateUUIDv4().slice(0, 16)}`);
   }, [autoRotateKeyOnEdit]);
@@ -2672,7 +2671,7 @@ export default function App() {
     let activeRef = referenceId.trim();
     const alreadyExists = dbRef.current.idempotencyKeys.some((k) => k.idempotencyKey === activeKey);
     if (autoRotateKeyOnEdit && alreadyExists) {
-      const randNum = Math.floor(10000 + Math.random() * 90000);
+      const randNum = (10000 + secureRandomInt(90000));
       activeRef = `TXN-INST-${randNum}`;
       activeKey = `idem-${generateUUIDv4().slice(0, 16)}`;
       setReferenceId(activeRef);
@@ -2711,7 +2710,7 @@ export default function App() {
   };
 
   const generateFreshTransferKey = () => {
-    const randNum = Math.floor(10000 + Math.random() * 90000);
+    const randNum = (10000 + secureRandomInt(90000));
     setReferenceId(`TXN-INST-${randNum}`);
     setIdempotencyKey(`idem-${generateUUIDv4().slice(0, 16)}`);
   };
@@ -2784,9 +2783,9 @@ export default function App() {
     const amountPaise = Math.abs(delta);
 
     executeSettlementTransaction(
-      `recalibrate-marg-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      `recalibrate-marg-${Date.now()}-${generateHexId(12)}`,
       {
-        referenceId: `RECAL-MARG-${Math.floor(1000 + Math.random() * 9000)}`,
+        referenceId: `RECAL-MARG-${(1000 + secureRandomInt(9000))}`,
         sourceAccountId: sourceId,
         destinationAccountId: destId,
         amountPaise,
@@ -2908,7 +2907,7 @@ export default function App() {
     const jpmId = INITIAL_ACCOUNTS[0].id;
     const gsId = INITIAL_ACCOUNTS[1].id;
     const sharedKey = `storm50-shared-key-${Date.now()}`;
-    const sharedRef = `STORM50-REF-${Math.floor(1000 + Math.random() * 9000)}`;
+    const sharedRef = `STORM50-REF-${(1000 + secureRandomInt(9000))}`;
     const amountPaise = 25000; // ₹250.00
 
     const gsBefore = dbRef.current.accounts.find((a) => a.id === gsId).balance;
@@ -3165,7 +3164,7 @@ export default function App() {
         setOmnibusShardingEnabled(true);
 
         const key = `sim1-jpm-gs-${Date.now().toString().slice(-5)}`;
-        const ref = `SIM1-SWEEP-${Math.floor(1000 + Math.random() * 9000)}`;
+        const ref = `SIM1-SWEEP-${(1000 + secureRandomInt(9000))}`;
         const res = executeSettlementTransaction(
           key,
           {
@@ -3204,7 +3203,7 @@ export default function App() {
           'SIM 2 RUNNING: Network Retry Storm (10× Identical Idempotency-Key Hits in Redis <1ms + 1× Mutated Amount Attack → HTTP 422)'
         );
         const sharedKey = `sim2-retry-storm-${Date.now().toString().slice(-5)}`;
-        const sharedRef = `SIM2-GS-MS-${Math.floor(1000 + Math.random() * 9000)}`;
+        const sharedRef = `SIM2-GS-MS-${(1000 + secureRandomInt(9000))}`;
 
         let redisHits = 0;
         for (let i = 1; i <= 10; i++) {
@@ -3315,7 +3314,7 @@ export default function App() {
         // 1. Trip Redis CircuitBreaker to OPEN and execute initial transfer + idempotent retry via PostgreSQL Fallback
         setRedisCircuitState('OPEN');
         const cbKey = `sim6-redis-down-key-${Date.now().toString().slice(-5)}`;
-        const cbRef = `SIM6-CB-FALLBACK-${Math.floor(100 + Math.random() * 899)}`;
+        const cbRef = `SIM6-CB-FALLBACK-${(100 + secureRandomInt(899))}`;
 
         executeSettlementTransaction(
           cbKey,
@@ -3442,7 +3441,7 @@ export default function App() {
     const r1 = executeSettlementTransaction(
       testKey1,
       {
-        referenceId: `DIAG-ACID-${Math.floor(1000 + Math.random() * 8999)}`,
+        referenceId: `DIAG-ACID-${(1000 + secureRandomInt(8999))}`,
         sourceAccountId: jpmId,
         destinationAccountId: gsId,
         amountPaise: 150000, // ₹1,500.00
@@ -3532,7 +3531,7 @@ export default function App() {
     const r5 = executeSettlementTransaction(
       `diag-lock-${Date.now()}`,
       {
-        referenceId: `DIAG-LOCK-${Math.floor(1000 + Math.random() * 8999)}`,
+        referenceId: `DIAG-LOCK-${(1000 + secureRandomInt(8999))}`,
         sourceAccountId: msId, // 018f3c00
         destinationAccountId: gsId, // 018f2b00
         amountPaise: 50000,
@@ -3552,7 +3551,7 @@ export default function App() {
     const r6 = executeSettlementTransaction(
       `diag-od-${Date.now()}`,
       {
-        referenceId: `DIAG-OD-${Math.floor(1000 + Math.random() * 8999)}`,
+        referenceId: `DIAG-OD-${(1000 + secureRandomInt(8999))}`,
         sourceAccountId: margId,
         destinationAccountId: jpmId,
         amountPaise: margBal + 100000, // Exceeds available balance
@@ -3640,7 +3639,7 @@ export default function App() {
         amountInputStr: '25000'
       });
       // Generate a fresh unused key in the form so the user's very first manual click succeeds with 201!
-      setReferenceId(`TXN-INST-${Math.floor(10000 + Math.random() * 89999)}`);
+      setReferenceId(`TXN-INST-${(10000 + secureRandomInt(89999))}`);
       setIdempotencyKey(`idem-${generateUUIDv4().slice(0, 16)}`);
       setSimCurrentStage(0);
       setSimProgressPct(100);
