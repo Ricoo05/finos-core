@@ -7,8 +7,8 @@
 - PASS: local full post-update suite: 13 Java, eight browser, two HTTP/live-FX checks and build.
 - PASS: npm advisory check; Maven patches with two disclosed, scoped, expiring applicability exceptions.
 - PASS: immutable CI action references, meaningful integration coverage and report artifacts configured.
-- PENDING: repeat history scan including publication commit, push candidate, verify hosted CI.
-- PENDING: change existing `Ricoo05/finos-core` visibility, verify anonymous source/README/recording access.
+- PASS: publication commit pushed; Gitleaks scanned all seven commits with no matches. New hosted CI remains in progress.
+- PASS: existing `Ricoo05/finos-core` is public; anonymous repository, license and recording access returned HTTP 200.
 - PENDING: isolated clean-clone setup/test with fresh runtime settings and database.
 - NOT TESTED: Docker, healthy Redis path, public interactive hosting and comprehensive runtime vulnerability assessment. These are not advertised as working.
 
