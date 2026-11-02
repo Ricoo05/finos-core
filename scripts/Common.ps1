@@ -41,8 +41,12 @@ function Start-FinosPostgres($Settings) {
   & $ctl status -D $Settings.pgData 2>$null | Out-Null
   if($LASTEXITCODE -ne 0){
     if(Test-FinosPort 55432){throw 'Port 55432 is occupied by another PostgreSQL instance.'}
-    & $ctl start -D $Settings.pgData -l (Join-Path $FinosLocal 'postgres.log') -w
-    if($LASTEXITCODE -ne 0){throw 'Project PostgreSQL failed to start.'}
+    # A newly started postgres can inherit PowerShell's captured output handles.
+    # Redirect pg_ctl to files and wait only for its parent process, not the
+    # persistent server process tree (Start-Process -Wait would wait forever).
+    $startup=Start-Process -FilePath $ctl -ArgumentList @('start','-D',('"'+$Settings.pgData+'"'),'-l',('"'+(Join-Path $FinosLocal 'postgres.log')+'"'),'-w','-t','45') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $FinosLocal 'pg-start.stdout.log') -RedirectStandardError (Join-Path $FinosLocal 'pg-start.stderr.log')
+    if(-not $startup.WaitForExit(60000)){throw 'PostgreSQL startup timed out. Inspect .local/pg-start.*.log.'}
+    if($startup.ExitCode -ne 0){throw 'Project PostgreSQL failed to start. Inspect .local/pg-start.*.log.'}
   }
 }
 function Get-FinosProcess([string]$Name) {
