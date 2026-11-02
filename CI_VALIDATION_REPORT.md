@@ -1,23 +1,13 @@
-# CI validation
+# Verification matrix — 2 November 2026
 
-## Local publication candidate — 2 November 2026
+Tested implementation: 6745a74. Exact full source revision and links: FINAL_GITHUB_STATUS.md.
 
-`./Test-FINOS.ps1 -BrowserChannel msedge -LiveFx` passed after the dependency and V4 permission changes: 13 backend integration tests, eight browser tests, two HTTP/live-FX tests, production frontend build. Backend tests had zero failures/errors/skips. The recorded result is `public/verification.json`; detailed local logs are ignored. Format check and npm audit also passed.
+- **Native Windows:** Spring Boot 4/Java 21, PostgreSQL and Kafka; 13 backend tests, eight browser checks, two HTTP/live-FX checks and production build passed. Redis outage fallback is included; native runtime intentionally leaves Redis disabled.
+- **Hosted full integration suite:** run 41476387724, 14 backend tests against real PostgreSQL, Kafka and Redis with zero failures/errors/skips. RedisHealthyIT asserts PING, cache TTL, REDIS-served replay, cached mismatch rejection, eviction and durable repopulation. Eight browser checks passed without failures/skips/flakes.
+- **Docker deployment:** run 41476387905 built both images from source, initialized fresh services, passed Redis outage/recovery and full persistent-volume restart simulations, and passed HTTP/SSE smoke plus eight browser tests against the built frontend through Nginx. Downloaded artifacts contain the recorded recovery checks and browser results; the public summary is docs/docker-run.json.
+- **Security/build checks:** CodeQL run 41476387791 passed; zero open main findings confirmed through the API. Maven OSV: 138 resolved packages, zero advisory matches, no exceptions. npm audit: zero matches. Complete-history secret scan and formatting passed.
+- **Upgrade compatibility:** a real receipt committed under the old application replayed through the new framework without a second transfer. No existing ledger data or applied migrations were rewritten.
 
-The workflow runs real PostgreSQL/Kafka, all 13 Java tests with a zero-skip assertion, npm audit, format checks, Maven OSV review, HTTP smoke and Chromium browser workflows. Hosted core tests disable external FX; that single provider-dependent smoke case is explicitly skipped there. The local provider-dependent test passed separately. Gitleaks checks full history; third-party Actions use verified immutable SHAs and the Gitleaks release archive has a pinned checksum.
+Core hosted HTTP smoke intentionally skips the external-provider check; native live-provider checks passed separately. This is deliberate provider isolation, not a skipped financial correctness test. Maven's default native suite contains 13 tests; the redis-integration profile contains all 14 and is mandatory in hosted verification. Building the Docker JAR skips execution because build stages have no test infrastructure; the independent verification job executes the real suite.
 
-Prior successful baseline CI: [run 41420409455](https://github.com/Ricoo05/finos-core/actions/runs/41420409455), before this readiness update. It does not verify the new changes. Publication-candidate hosted run is pending upload; exact commit/run/conclusion will be recorded in `FINAL_GITHUB_STATUS.md` after execution. A pending run must not be described as passing.
-
-Known benign local warning: Playwright's forced-color output overrides NO_COLOR. No failed check is suppressed to obtain a green result. Docker/healthy Redis and public hosting are outside this tested matrix.
-
-## Observed hosted and clean-clone results
-
-Run 41430137922 completed successfully for implementation 807e563. Downloaded artifacts confirm 13 Java tests with zero failures/errors/skips and eight browser tests with zero failures/skips/flakes. OSV and full-history secret scan passed their configured policy. The core provider-dependent HTTP test is intentionally skipped; local and clean-clone live-FX checks passed.
-
-Anonymous independent setup/test passed at d45cc18 after the first-start launcher fix. After the later archived-identifier security correction, build, eight browser checks and direct archived settlement passed locally. Latest hosted verification 41431414604 and CodeQL 41431414639 remain separately observable; record their actual conclusions before declaring them passed. Superseded main runs 41430492297/41431094498/41431094575 were cancelled in favor of the latest source, not recorded as successful.
-
-## Final observed results
-
-Implementation b8cb94b943dca01b8729b6894e0805deddd0e956 passed hosted verification run 41432950217 and CodeQL run 41432950343. Both language analyses returned zero findings, and the main-branch open-alert API returned an empty list. Earlier pending statuses in the chronological record above are superseded by these executed results. Subsequent documentation-only changes do not alter tested application code.
-
-Recheck on 2 November 2026: implementation b22b796 passed hosted verification 41473953369 and CodeQL 41473953470. Downloaded test artifacts confirmed 13 Java and eight browser tests with zero failures/skips; CodeQL API confirmed zero open main findings. Local live-FX/HTTP checks also passed. Documentation links and public access were rechecked.
+Earlier Docker harness execution failed because it checked an internal service field instead of the public servedBy API field. The assertion was corrected and the complete simulation rerun successfully; the failure was not masked or recorded as passing. Optional unmerged dependency-bump runs were cancelled to prioritize final main checks; they remain subject to required checks before merging.

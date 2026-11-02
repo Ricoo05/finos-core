@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "recordedAt": "2026-11-02T15:58:37.713Z",
+  "checks": [
+    "healthy Redis replay",
+    "cached payload tamper rejected",
+    "Redis outage durable replay/new commit",
+    "Redis recovery",
+    "pending outbox survives backend restart",
+    "named-volume stack recreation retains receipts",
+    "three transfers committed exactly once",
+    "zero ledger/projection drift"
+  ],
+  "sourceCommit": "6745a7491555bdd3d36b32e5d5d2504847c1c83a",
+  "workflow": "https://github.com/Ricoo05/finos-core/actions/runs/41476387905"
+}

@@ -16,7 +16,7 @@ Fifteen review criteria:
 10. Live data honesty: timestamped daily FX; no fabricated interbank feed or VaR.
 11. CI: strong configured coverage; new hosted result still must be observed.
 12. Reproducibility: fresh-clone execution still must be completed.
-13. Security: dependency patches, least privilege and scoped exceptions; no production auth/HA.
+13. Security: dependency patches, least privilege and strict scans without advisory exceptions; no production auth/HA.
 14. Demo/presentation: actual recording and concise walkthrough; no public writable deployment.
 15. Candidate understanding: 15 implementation exercises cover the tested behavior and architectural tradeoffs.
 

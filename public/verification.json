@@ -1,38 +1,38 @@
 {
   "suites": [
     {
-      "seconds": 24.481,
+      "name": "dev.finoscore.KafkaIntegrationTest",
+      "skipped": 0,
       "tests": 1,
       "failures": 0,
-      "skipped": 0,
       "errors": 0,
-      "name": "dev.finoscore.KafkaIntegrationTest"
+      "seconds": 25.41
     },
     {
-      "seconds": 3.615,
+      "name": "dev.finoscore.LedgerIntegrationTest",
+      "skipped": 0,
       "tests": 11,
       "failures": 0,
-      "skipped": 0,
       "errors": 0,
-      "name": "dev.finoscore.LedgerIntegrationTest"
+      "seconds": 3.484
     },
     {
-      "seconds": 2.094,
+      "name": "dev.finoscore.RedisFallbackTest",
+      "skipped": 0,
       "tests": 1,
       "failures": 0,
-      "skipped": 0,
       "errors": 0,
-      "name": "dev.finoscore.RedisFallbackTest"
+      "seconds": 1.667
     }
   ],
-  "passed": true,
-  "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis cache is not verified. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring.",
-  "recordedAt": "2026-11-02T15:40:44.9821312Z",
   "checks": [
     "13 backend integration tests passed, including real Kafka and Redis outage fallback.",
     "HTTP integration smoke: settlement, replay, payload mismatch, Kafka projection, deduplication, SSE.",
     "Live FX check: provider available, timestamp fresh, server quote returned.",
     "8 browser tests passed: six views, 320–1440px widths, retry after reload, freeze, backlog recovery, reconnect, FX form, scenario and archived simulator.",
     "Frontend production build passed."
-  ]
+  ],
+  "recordedAt": "2026-11-02T15:53:52.8675227Z",
+  "passed": true,
+  "scope": "Local PostgreSQL and single-broker Kafka. Browser checks included: True. Live FX check included: True. Healthy Redis integration is a separate CI/Docker check; this native run verifies outage fallback. Hosted CI status is tracked separately in GitHub Actions. This is a recorded run, not continuous monitoring."
 }

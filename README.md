@@ -1,6 +1,6 @@
 # FINOS-Core
 
-A local settlement engineering project: a durable double-entry ledger, retry-safe API, Kafka event delivery, and a React operations desk. Uses fictional accounts and demo funds. Independent project; no FINOS or bank affiliation.
+A local settlement engineering project: a Java 21/Spring Boot 4 double-entry ledger, retry-safe API, Kafka event delivery, and a React operations desk. Uses fictional accounts and demo funds. Independent project; no FINOS or bank affiliation.
 
 [![Verify FINOS-Core](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Ricoo05/finos-core/actions/workflows/verify.yml)
 
@@ -9,6 +9,10 @@ A local settlement engineering project: a durable double-entry ledger, retry-saf
 ![Actual local desk after settlement, retry and event recovery](docs/demo/overview.png)
 
 **Problem:** a client retries after a timeout, while a downstream event consumer is unavailable. The transfer must commit once, remain balanced, and eventually reach the flow projection without being counted twice.
+
+## Run with Docker
+
+For the built React/Nginx frontend, Java API, PostgreSQL, Kafka and authenticated Redis, follow [DOCKER.md](DOCKER.md). Only the frontend is exposed on loopback port 5173. Named volumes retain ledger and event data.
 
 ## Run on Windows x64
 
@@ -66,7 +70,7 @@ flowchart LR
 - The idempotency key binds to a canonical SHA-256 request hash. Same key/request returns the stored receipt; a changed request returns 422. A failed transaction rolls back the key claim.
 - The relay publishes with broker acknowledgement before marking an outbox event processed. A crash between those steps can redeliver. The consumer inserts its inbox ID and updates both account flow projections in one transaction. A duplicate ID changes neither projection.
 - Malformed Kafka messages receive bounded retries, then are published to a dead-letter topic and recorded for inspection. The Kafka integration test exercises this path.
-- Optional Redis caches receipts after commit. It is disabled locally; the outage-to-PostgreSQL fallback is tested. The healthy-cache path has not been verified.
+- Redis caches receipts after commit. A real-Redis integration test verifies cache hits, TTL, tamper rejection, eviction and durable repopulation. The native Windows path leaves Redis disabled; the full Docker stack enables authenticated Redis and tests outage/recovery.
 
 ## Live data and analysis
 
@@ -106,4 +110,4 @@ The archived browser simulator is reachable at `/?mode=simulator` and explicitly
 
 Project code is [MIT licensed](LICENSE). See [dependency/provenance notes](THIRD_PARTY_NOTICES.md), [security scope](SECURITY.md), [executed security review](SECURITY_REVIEW.md), [contribution checks](CONTRIBUTING.md), and [15 implementation questions and exercises](INTERVIEW_GUIDE.md).
 
-The readiness reports distinguish local tests, hosted CI and clean-clone verification. Docker and a public interactive deployment are not offered as verified run paths. The two reviewed Spring dependency matches and their expiry are disclosed in `SECURITY_REVIEW.md`; no zero-vulnerability claim is made for Java.
+The readiness reports distinguish native Windows, hosted integration tests and the full Docker stack. See [Docker setup and recovery checks](DOCKER.md). Spring Boot 4.0.9 replaces the vulnerable Spring 6 dependency line; the resolved Maven advisory scan has zero matches and no exceptions. This is dated evidence, not continuous security certification.

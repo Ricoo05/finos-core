@@ -1,34 +1,31 @@
 # Security review — 2 November 2026
 
-Scope: local educational application and source publication, not public deployment approval or penetration-test certification.
+Scope: local settlement application, its container deployment and source publication. Tests and scans are dated evidence.
 
-- **PASS:** Gitleaks 8.30.1, verified release checksum, scanned all six baseline Git commits (`git . --log-opts=--all --redact`). No matches. Repeat after staging the publication changes. `.local` secrets/data and original private reference files are ignored.
-- **PASS:** npm audit after Vite 6.4.5/PostCSS 8.5.32 update reported zero vulnerabilities across the installed graph. This is a dated advisory check, not a guarantee.
-- **REVIEWED WITH EXCEPTIONS:** OSV resolved Maven scan initially found 31 matches. Compatible updates to Jackson, Tomcat, Netty, Log4j API, PostgreSQL JDBC, LZ4 and Snappy reduced this to two Spring MVC 6.2.19 matches; no unreviewed matches remain at that scan.
-- **PASS:** New migration V4 narrows column updates and account inserts. A new integration test asserts PostgreSQL SQLSTATE 42501 when the runtime role attempts overdraft policy/currency changes, request-hash/event-payload changes or an overdraft-enabled account insert. All 13 backend tests passed again after the dependency overrides, alongside eight browser and two HTTP/live-FX checks.
-- **PASS (configuration):** CI actions pinned to verified v4 commit SHAs; read-only contents permission, timeout and report artifacts retained. npm audit, OSV and complete-history secret scanning are mandatory CI steps. Dependency update configuration covers npm, Maven and Actions.
+## Dependency and source checks
 
-## Remaining Spring matches
+- Spring Boot 4.0.9/Spring Framework 7 replace the earlier affected Spring 6 line. The two applicability exceptions and their configuration file were removed.
+- Resolved Maven OSV scan: **138 packages, zero advisory matches, no suppressions or exceptions**. The scanner fails on any match or incomplete response.
+- npm audit: **zero reported vulnerabilities** at the local check.
+- CodeQL covers Java and JavaScript; exact runs and results are in FINAL_GITHUB_STATUS.md. A successful job alone is not treated as proof of zero alerts; the main-branch alert API is also inspected.
+- Full Git-history Gitleaks scan uses a checksum-verified release. Runtime passwords, data, original private references and logs remain ignored. Third-party CI actions and Dockerfile base images are pinned to verified immutable references.
 
-1. [CVE-2026-47890, vendor advisory](https://spring.io/security/cve-2026-47890/): requires SSE **view fragments**. `Api.events` emits only fixed refresh strings/timestamps, not view rendering. Vendor rates this low; the aggregated database severity differs. This is an applicability assessment, not a patched dependency.
-2. [CVE-2026-47884, vendor advisory](https://spring.io/security/cve-2026-47884/): requires `XsltView` and wildcard view-name inference. The application has REST JSON endpoints, no XSLT/view resolver or wildcard view-rendering mapping. Vendor rates this medium. No OSS 6.2 patch was listed in Maven Central during review; a framework-major change is not silently mixed into Boot 3.5.
+## Verified financial and cache boundaries
 
-Exact package/version/ID exceptions expire on 2 December 2026 in `scripts/security-exceptions.json`. The scanner reports them, fails on new/unreviewed or expired matches, and requires reassessment if view-rendering features are introduced. Review manually when endpoints/dependencies change; a text guard is not a full reachability analysis.
+Ordered account locks, integer minor units, paired immutable entries, deferred reconciliation constraints, durable request identity and atomic ledger/receipt/outbox writes remain in place. V4 restricts the runtime role's policy/hash/event-payload updates. The integration suite tests these controls against PostgreSQL and Kafka.
 
-## Explicit limits
+The real Redis integration test verifies PING, TTL, Redis-served replay, changed-payload rejection, eviction, durable database replay and cache repopulation. The existing Redis-unavailable test remains. The full Docker simulation additionally stops and restores authenticated Redis, asserts fallback/new posting during outage and cache recovery afterward, recovers a pending event after backend restart, and recreates all containers with persistent volumes while preserving receipts and exactly-once financial effects.
 
-No user auth/RBAC, public writable demo, TLS/broker ACLs, HA/DR, penetration test, exhaustive runtime-distribution advisory scan or model-security certification. API startup still receives migration-owner credentials. Redis's healthy-cache path is unverified. Docker is not installed and is not claimed as verified. The main settlement engine does not call external language models.
+The native application was rebuilt and its full browser/API suite rerun after the framework upgrade. An actual receipt committed before the upgrade replayed successfully afterward without a second transfer.
 
-## Hosted source analysis and launcher review
+## Deployment and repository controls
 
-Earlier CodeQL reviews found randomness issues in the archived browser simulator. Web Crypto and rejection sampling corrected those findings; the final observed results are recorded below.
+Only the Docker frontend is published on loopback. Database, broker, Redis and backend have no published host ports. Redis requires a generated password; backend/frontend run without root privileges and have read-only filesystems. Compose credentials are generated privately and preserved with the data volumes.
 
-The first anonymous-clone attempt exposed a Windows pg_ctl inherited-output-handle hang during first startup. Common.ps1 now redirects startup output to files and waits only for pg_ctl, with a timeout; it does not wait for the persistent server process tree. The repeated independent setup/test passed: 13 Java, eight browser and two HTTP/live-FX checks plus build; see CLEAN_CLONE_VERIFICATION.md.
+Only Ricoo05 has repository write/admin access, with no pending collaborator invitations at review. Main requires contributor review and passing GitHub checks, blocks force pushes/deletion and requires resolved discussions. Auto-merge is disabled and CODEOWNERS assigns all files to Ricoo05. The owner retains administrator control. Public MIT source can be forked/reused in other repositories.
 
-## Final security result
+## Scope limits
 
-Implementation b8cb94b passed CodeQL run 41432950343: zero Java results, zero JavaScript results, zero open main-branch alerts verified through the repository API. All archived randomness uses Web Crypto; rail selection and simulated pricing use rejection-sampled integers rather than rounded random fractions. Earlier findings were corrected without dismissals. Full verification run 41432950217 passed. Independent setup/test passed after the Windows launcher correction. Earlier in-progress statements above are historical and superseded by these results.
+This is a local, single-database/single-broker engineering project, not a deployed multi-user banking service. Origin checks do not replace production authentication; startup still receives migration credentials. Container execution is verified on Linux CI, not a claim that Docker Desktop is installed on this Windows machine. No exhaustive penetration test, runtime-image CVE certification or high-availability guarantee is asserted.
 
-The two documented Spring applicability exceptions remain, with expiry and source references. CodeQL success is not a claim of production security or zero dependency advisories.
-
-Recheck access limit: the GitHub Dependabot alerts API returned HTTP 403 for this session. Its alert count was not verified. npm audit and the resolved Maven OSV scan provide the executed dependency checks; CodeQL alert access succeeded.
+The GitHub Dependabot alerts API returned HTTP 403 for this session, so its alert count was not certified. The actual dependency checks are npm audit and the resolved Maven OSV scan above; no advisory was dismissed to obtain a passing result.
